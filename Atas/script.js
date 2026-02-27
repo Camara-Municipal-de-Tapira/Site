@@ -1,3 +1,6 @@
+let paginaAtual = 1;
+let anoPesquisado = "";
+
 function escaparHTML(texto) {
     if (!texto) return "";
     return texto.toString()
@@ -10,70 +13,79 @@ function escaparHTML(texto) {
 
 document.addEventListener('DOMContentLoaded', () => {
     const selectAno = document.getElementById('ano-ata');
-    const anoAtual = new Date().getFullYear(); // Pega o ano em que estamos (ex: 2026)
+    const anoAtual = new Date().getFullYear();
+    const anoInicial = 2023;
 
-// DEFINA AQUI O ANO MAIS ANTIGO DO SEU SAPL
-const anoInicial = 2023;
-
-// Loop que cria as opções (Ex: 2026, 2025, 2024... até 2017)
-for (let ano = anoAtual; ano >= anoInicial; ano--) {
-    const novaOpcao = document.createElement('option');
-    novaOpcao.value = ano;
-    novaOpcao.textContent = ano;
-    selectAno.appendChild(novaOpcao);
-}
-
-// Deixa a caixinha já selecionada no ano atual
-//selectAno.value = anoAtual;
-
-// Dispara a busca pela primeira vez para não deixar a tela vazia
-//carregarSessoes(anoAtual);
-});
-
-document.getElementById('btn-pesquisar').addEventListener('click', () => {
-    const anoEscolhido = document.getElementById('ano-ata').value;
-
-    if (anoEscolhido === "") {
-        alert("Por favor, selecione um ano na lista.");
-        return; // Interrompe se o usuário clicar em "Selecione..."
+    for (let ano = anoAtual; ano >= anoInicial; ano--) {
+        const novaOpcao = document.createElement('option');
+        novaOpcao.value = ano;
+        novaOpcao.textContent = ano;
+        selectAno.appendChild(novaOpcao);
     }
 
-    // Chama a função principal passando o ano que o usuário escolheu
-    carregarSessoes(anoEscolhido);
+    selectAno.value = "";
+    anoPesquisado = anoAtual;
+
+    document.getElementById('btn-pesquisar').addEventListener('click', () => {
+        const anoEscolhido = document.getElementById('ano-ata').value;
+
+        if (anoEscolhido === "") {
+            alert("Por favor, selecione um ano na lista.");
+            return;
+        }
+
+        anoPesquisado = anoEscolhido;
+        paginaAtual = 1; // Sempre que trocar o ano, volta para a página 1!
+        carregarSessoes(anoPesquisado, paginaAtual);
+    });
+
+    document.getElementById('btn-proximo').addEventListener('click', () => {
+        paginaAtual++;
+        carregarSessoes(anoPesquisado, paginaAtual);
+    });
+
+    document.getElementById('btn-anterior').addEventListener('click', () => {
+        if (paginaAtual > 1) {
+            paginaAtual--;
+            carregarSessoes(anoPesquisado, paginaAtual);
+        }
+    });
+
+    // Inicia a primeira busca na página 1
+    //carregarSessoes(anoPesquisado, paginaAtual);
 });
 
-async function carregarSessoes(ano) {
+async function carregarSessoes(ano, pagina) {
     const url = "https://sapl.tapira.mg.leg.br/api/sessao/sessaoplenaria/";
 
-    // Filtra pelo ano e ordena da mais recente para a mais antiga
-    const params = `?data_inicio__year=${ano}&o=-data_inicio`;
+    // Agora a URL inclui &page= e o page_size=10 (para trazer de 10 em 10)
+    const params = `?data_inicio__year=${ano}&o=-data_inicio&page=${pagina}&page_size=10`;
 
     const container = document.getElementById('lista-sessoes');
+    const divPaginacao = document.getElementById('controles-paginacao');
+    const btnAnterior = document.getElementById('btn-anterior');
+    const btnProximo = document.getElementById('btn-proximo');
+    const infoPagina = document.getElementById('info-pagina');
 
-    // Mensagem de carregamento amigável
-    container.innerHTML = `<p style="color: #666; margin-top: 20px;"><em>Buscando atas de ${ano}...</em></p>`;
+    container.innerHTML = `<p style="color: #666; margin-top: 20px;"><em>Buscando atas de ${ano} (Página ${pagina})...</em></p>`;
+    divPaginacao.style.display = "none"; // Esconde os botões enquanto carrega
 
     try {
         const response = await fetch(url + params);
         const data = await response.json();
 
-        // Limpa a mensagem de carregamento
         container.innerHTML = "";
 
-        // Se o SAPL disser que não tem atas naquele ano:
         if (!data.results || data.results.length === 0) {
             container.innerHTML = `<p style="margin-top: 20px;">Nenhuma sessão plenária encontrada para o ano de ${ano}.</p>`;
             return;
         }
 
-        // Se achou, vamos desenhar cada card
+        // Desenha os cards
         data.results.forEach(sessao => {
-
-            // Corrige o fuso horário quebrando a data
             const partes = sessao.data_inicio.split('-');
             const dataFormatada = `${partes[2]}/${partes[1]}/${partes[0]}`;
 
-            // Lógica do botão da Ata
             let botaoAta = "";
             if (sessao.upload_ata) {
                 botaoAta = `<a href="${sessao.upload_ata}" target="_blank" class="btn-ata">Baixar Ata (PDF)</a>`;
@@ -81,7 +93,6 @@ async function carregarSessoes(ano) {
                 botaoAta = `<span style="color: #777; font-size: 0.9em; display: inline-block; margin-top: 10px;">(Ata não disponível)</span>`;
             }
 
-            // Monta o HTML do Card
             const htmlSessao = `
             <div class="caixa-sessao">
             <h3>${escaparHTML(sessao.__str__)}</h3>
@@ -89,10 +100,21 @@ async function carregarSessoes(ano) {
             ${botaoAta}
             </div>
             `;
-
-            // Joga o card dentro do balde
             container.innerHTML += htmlSessao;
         });
+
+        infoPagina.textContent = `Página ${pagina}`;
+        divPaginacao.style.display = "flex"; // Mostra a barra de paginação
+
+        // Se data.previous for null, desativa o botão "Anterior"
+        btnAnterior.disabled = (data.previous === null);
+
+        // Se data.next for null, desativa o botão "Próximo"
+        btnProximo.disabled = (data.next === null);
+
+        // Muda a opacidade para o cidadão ver que o botão está desativado
+        btnAnterior.style.opacity = btnAnterior.disabled ? "0.5" : "1";
+        btnProximo.style.opacity = btnProximo.disabled ? "0.5" : "1";
 
     } catch (erro) {
         console.error(erro);
