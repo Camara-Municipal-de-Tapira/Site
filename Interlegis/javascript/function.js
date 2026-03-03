@@ -56,7 +56,7 @@ $(window).load(function() {
                 Galleria.unloadTheme();
                 Galleria.get(0).destroy();
                 //Reinicia a Galleria com o novo tema carregado
-                Galleria.loadTheme('++theme++Azul/galleria-theme/galleria.tema-pm3.js');
+                Galleria.loadTheme('++theme++Interlegis/galleria-theme/galleria.tema-pm3.js');
                 Galleria.run('.galleria', {
                     theme: 'tema-pm3'
                 });
