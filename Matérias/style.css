@@ -1,3 +1,11 @@
+.documentFirstHeading, .documentSecondHeading {
+    display: grid;
+    align-items: start;
+    margin: 0 auto;
+    max-width: 800px;
+    padding: 20px;
+}
+
 /* Container principal da pesquisa */
 .pesquisa-materias {
     display: grid;
@@ -20,7 +28,7 @@
     color: #333;
 }
 
-/* Campos de pesquisa e dropdowns (mantidos como você queria) */
+/* Campos de pesquisa e dropdowns */
 .selecao-tipo, .selecao-ano, .selecao-numero, .selecao-autor, .pesquisar-expressoes {
     width: 100%;
     box-sizing: border-box;
@@ -58,4 +66,27 @@
 
 .botao-pesquisar:hover {
     background-color: #5A9DE0;
+}
+
+/*cards de resposta -- Remover ao subir para o site*/
+
+.caixa-sessao {
+    border: 1px solid #ddd;
+    border-left: 5px solid #0056b3; /* Faixa azul na esquerda */
+    background-color: #f9f9f9;
+    padding: 15px;
+    margin-bottom: 15px;
+    max-width: 600px;
+    margin: 20px 0;
+    border-radius: 4px;
+    font-family: Arial, sans-serif;
+}
+
+.caixa-sessao:hover{
+    transform: scale(1.0);
+}
+
+.caixa-sessao h3 {
+    margin-top: 0;
+    color: #333;
 }
