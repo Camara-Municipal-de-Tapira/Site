@@ -1,0 +1,61 @@
+/* Container principal da pesquisa */
+.pesquisa-materias {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Duas colunas */
+    gap: 20px;
+    align-items: start; /* Alterado de 'center' para 'start' para alinhar os topos */
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* NOVO: A caixinha que agrupa a label e o input */
+.grupo-campo {
+    display: flex;
+    flex-direction: column; /* Coloca a label em cima e o campo embaixo */
+    gap: 5px; /* Dá um espacinho de respiro entre a label e o campo */
+}
+
+.grupo-campo label {
+    font-weight: bold; /* Deixa as labels em negrito (opcional, mas fica bom) */
+    color: #333;
+}
+
+/* Campos de pesquisa e dropdowns (mantidos como você queria) */
+.selecao-tipo, .selecao-ano, .selecao-numero, .selecao-autor, .pesquisar-expressoes {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #333;
+    min-width: 150px;
+}
+
+.selecao-tipo, .selecao-ano, .selecao-numero, .selecao-autor {
+    cursor: pointer;
+}
+
+.pesquisar-expressoes {
+    cursor: text;
+}
+
+/* Botão de pesquisar */
+.botao-pesquisar {
+    grid-column: 1 / -1; /* Ocupa a linha toda */
+    justify-self: end; /* Fica no canto direito */
+    display: inline-flex;
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #27A9F5;
+    color: white;
+    text-decoration: none;
+    border-radius: 1px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+}
+
+.botao-pesquisar:hover {
+    background-color: #5A9DE0;
+}

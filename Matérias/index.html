@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt" lang="pt"
+metal:use-macro="here/main_template/macros/master">
+<head>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <metal:main fill-slot="main">
+        <!--<link rel="stylesheet" type="text/css" tal:attributes="href string:${portal_url}/++theme++Interlegis/css/style.css">
+        <script type="text/javascript" tal:attributes="src string:${portal_url}/++theme++Azul/javascript/buscarmaterias.js"></script>-->
+
+
+        <script type="text/javascript src="script.js></script>
+
+        <h1 class="documentFirstHeading">Pesquisar matéria legislativa</h1>
+        <h3 class="documentSecondHeading">Os campos marcados com * são obrigatórios</h3>
+        <div class="pesquisa-materias" style="margin-bottom: 20px;">
+
+            <div class="grupo-campo">
+            <label for="tipo-materia"><strong>Tipo de matéria *</strong></label>
+            <select id="tipo-materia" class="selecao-tipo">
+                <option value="">---</option>
+            </select>
+            </div>
+
+            <div class="grupo-campo">
+            <label for="ano-materia"><strong>Ano da matéria *</strong></label>
+            <select id="ano-materia" class="selecao-ano">
+                <option value="">---</option>
+            </select>
+            </div>
+
+            <div class="grupo-campo">
+            <label for="expressoes-materia"><strong>Pesquisa de texto</strong></label>
+            <input type="text" id="pesquisar-expressoes" class="pesquisar-expressoes" placeholder="Pesquise pelo texto da matéria"></input>
+            </div>
+
+            <div class="grupo-campo">
+            <label for="numero-materia"><strong>Número</strong></label>
+            <select id="numero-materia" class="selecao-numero">
+                <option value="">---</option>
+            </select>
+            </div>
+
+            <div class="grupo-campo">
+            <label for="autor-materia"><strong>Autor</strong></label>
+            <select id="autor-materia" class="selecao-autor">
+                <option value="">---</option>
+            </select>
+            </div>
+
+
+            <button type="button" id="btn-pesquisar" class="botao-pesquisar">Pesquisar</button>
+
+
+        </div>
+
+        <div id="lista-materias"></div>
+
+        <div id="controles-paginacao" style="display: none; align-items: center; gap: 15px; margin-top: 20px; margin-bottom: 30px;">
+            <button type="button" id="btn-anterior" class="botao-pesquisar-atas" disabled="disabled">« Anterior</button>
+            <span id="info-pagina" style="font-weight: bold; color: #555;">Página 1</span>
+            <button type="button" id="btn-proximo" class="botao-pesquisar-atas" disabled="disabled">Próxima »</button>
+        </div>
+
+
+    </metal:main>
+</body>
+
+</html>
