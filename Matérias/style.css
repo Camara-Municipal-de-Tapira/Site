@@ -48,20 +48,42 @@
     cursor: text;
 }
 
+.acoes-pesquisa {
+    grid-column:  1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* Botão de limpar os campos */
+.botao-limpar {
+
+    padding: 10px 15px;
+    background-color: #e0e0e0;
+    color: black;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: background 0.3s;
+}
+
+.botao-limpar:hover {
+    background-color: #ccc;
+}
+
 /* Botão de pesquisar */
 .botao-pesquisar {
-    grid-column: 1 / -1; /* Ocupa a linha toda */
-    justify-self: end; /* Fica no canto direito */
-    display: inline-flex;
-    margin-top: 10px;
+
     padding: 10px 15px;
     background-color: #27A9F5;
     color: white;
-    text-decoration: none;
     border-radius: 1px;
     font-weight: bold;
     cursor: pointer;
     border: none;
+    transition: background 0.3s;
 }
 
 .botao-pesquisar:hover {

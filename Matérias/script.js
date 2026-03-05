@@ -1,7 +1,9 @@
+let paginaAtual = 1;
+
 function escaparHTML(texto) {
     if(!texto) return "";
     return texto.toString()
-    .replace(/&/g, "&samp;")
+    .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
@@ -29,9 +31,22 @@ document.addEventListener('DOMContentLoaded', () =>{
     carregarNomeAutor();
 
     document.getElementById('btn-pesquisar').addEventListener('click', () => {
-
-        pesquisaMateria();
+        paginaAtual = 1;
+        pesquisaMateria(anoPesquisado, paginaAtual);
     });
+
+    document.getElementById('btn-proximo').addEventListener('click', () => {
+        paginaAtual++;
+        pesquisaMateria(anoPesquisado, paginaAtual);
+    });
+
+    document.getElementById('btn-anterior').addEventListener('click', () => {
+        if(paginaAtual > 1){
+            paginaAtual--;
+            pesquisaMateria(anoPesquisado, paginaAtual);
+        }
+    });
+
 });
 
 async function carregarTiposMateria(){
@@ -115,7 +130,7 @@ async function pegarNomeDoAutor(idAutor){
     }
 }
 
-async function pesquisaMateria() {
+async function pesquisaMateria(anoPesquisado, paginaAtual) {
 
     // 1. Capturar os valores digitados/selecionados pelo usuário
     const tipo = document.getElementById('tipo-materia').value.trim();
@@ -123,6 +138,7 @@ async function pesquisaMateria() {
     const numero = document.getElementById('numero-materia').value.trim();
     const autor = document.getElementById('autor-materia').value;
     const expressoes = document.getElementById('pesquisar-expressoes').value.trim();
+
 
     // 2. Validação dos campos obrigatórios
     // Se "tipo" OU "ano" estiverem vazios, dispara o alerta e para a execução
@@ -138,6 +154,7 @@ async function pesquisaMateria() {
     // Adiciona os campos obrigatórios na busca
     params.append('tipo', tipo);
     params.append('ano', ano);
+    params.append('page', paginaAtual);
 
     // Adiciona os campos opcionais APENAS se o usuário digitou algo
     if (numero) {
@@ -179,7 +196,7 @@ async function pesquisaMateria() {
         }
 
         // 5. Enviar os dados para a função que vai desenhar os cards na tela
-        renderizarResultados(materias);
+        renderizarResultados(dados);
 
     } catch (erro) {
         console.error("Falha ao buscar matérias:", erro);
@@ -188,35 +205,67 @@ async function pesquisaMateria() {
 }
 
 // Função para desenhar o HTML
-function renderizarResultados(materias) {
+function renderizarResultados(dados) {
 
-
+    const btnAnterior = document.getElementById('btn-anterior');
+    const btnProximo = document.getElementById('btn-proximo');
+    const infoPagina = document.getElementById('info-pagina');
+    const divPaginacao = document.getElementById('controles-paginacao');
     const containerResultados = document.getElementById('lista-materias'); // Crie uma div com essa classe para receber os cards
     containerResultados.innerHTML = ''; // Limpa os resultados da busca anterior
 
-    if (materias.length === 0) {
-        containerResultados.innerHTML = '<p>Nenhuma matéria encontrada com esses filtros.</p>';
-        return;
+    const listaMaterias = dados.results || [];
+
+    try{
+
+        if (dados.length === 0) {
+            aler("Nenhuma matéria encontrada com esses filtros");
+            /*
+            btnAnterior.disabled = true;
+            btnProximo.disabled = true; */
+            divPaginacao.style.display="none";
+            return;
+        }
+
+        listaMaterias.forEach(materia => {
+            // Monta o HTML do card (.caixa-sessao)
+
+            const baixarMateria = materia.texto_original
+            ? `<a href="${materia.texto_original}" target="_blank" class="btn-baixar">Baixar Matéria (PDF)</a>`
+            : `<span style="color:#777; font-size:0.9em; display:inline-block;
+            margin-top:10px;">(Matéria não disponível)</span>`;
+
+            const cardHTML = `
+            <div class="caixa-sessao">
+            <h3>${materia.__str__ || 'Matéria sem título'}</h3>
+            <p><strong>Ementa:</strong> ${materia.ementa || 'Sem ementa disponível'}</p>
+            <p><strong>Data de Apresentação:</strong> ${materia.data_apresentacao || 'N/A'}</p>
+            <p><strong>Autor:</strong> ${materia.nomeAutorReal}</p>
+            ${baixarMateria}
+            </div>
+            `;
+            // Adiciona o card na tela
+            containerResultados.innerHTML += cardHTML;
+        });
+
+        btnAnterior.disabled = (dados.pagination.links.previous === null);
+        btnProximo.disabled = (dados.pagination.links.next === null);
+
+        btnAnterior.style.opacity = btnAnterior.disabled ? "0.5" : "1";
+        btnProximo.style.opacity = btnProximo.disabled ? "0.5" : "1";
+
+        infoPagina.textContent = `Página ${dados.pagination.page} de ${dados.pagination.total_pages}`;
+
+        divPaginacao.style.display = "flex";
+    } catch (erro) {
+
+        alert("Houve um erro ao buscar os dados do SAPL. Tente novamente mais tarde.");
+        btnAnterior.disabled = true;
+        btnProximo.disabled = true;
+        divPaginacao.style.display = "none";
+        console.error("Houve um erro ao se conectar com o SAPL",erro);
+
     }
 
-    materias.forEach(materia => {
-        // Monta o HTML do card (.caixa-sessao)
 
-        const baixarMateria = materia.texto_original
-        ? `<a href="${materia.texto_original}" target="_blank" class="btn-baixar">Baixar Matéria (PDF)</a>`
-        : `<span style="color:#777; font-size:0.9em; display:inline-block;
-        margin-top:10px;">(Matéria não disponível)</span>`;
-
-        const cardHTML = `
-        <div class="caixa-sessao">
-        <h3>${materia.__str__ || 'Matéria sem título'}</h3>
-        <p><strong>Ementa:</strong> ${materia.ementa || 'Sem ementa disponível'}</p>
-        <p><strong>Data de Apresentação:</strong> ${materia.data_apresentacao || 'N/A'}</p>
-        <p><strong>Autor:</strong> ${materia.nomeAutorReal}</p>
-        ${baixarMateria}
-        </div>
-        `;
-        // Adiciona o card na tela
-        containerResultados.innerHTML += cardHTML;
-    });
 }
