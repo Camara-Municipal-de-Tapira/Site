@@ -1,5 +1,3 @@
-// TODO modficar o código de forma a garantir que ele capture pelo menos o tipo de matéria e o ano da matéria. Ver também uma forma de garantir que os dados opcionais sejam capturados conforme necessário.
-
 function escaparHTML(texto) {
     if(!texto) return "";
     return texto.toString()
@@ -32,12 +30,6 @@ document.addEventListener('DOMContentLoaded', () =>{
 
     document.getElementById('btn-pesquisar').addEventListener('click', () => {
 
-        /*const anoEscolhido = document.getElementById('ano-materia').value;
-
-        if(anoEscolhido === ""){
-            alert("Por favor, selecione um ano na lista.");
-            return;
-        }*/
         pesquisaMateria();
     });
 });
@@ -75,7 +67,6 @@ async function carregarTiposMateria(){
 
 async function carregarNomeAutor(){
 
-    let tipo = 2; // para só mostrar os vereadores
     let idAutor = "";
     const selectAutor = document.getElementById('autor-materia');
     let urlAutor = `https://sapl.tapira.mg.leg.br/api/base/autor/${idAutor}?tipo=2`;
@@ -196,7 +187,7 @@ async function pesquisaMateria() {
     }
 }
 
-// Função para desenhar o HTML (Os cards que você estilizou no CSS)
+// Função para desenhar o HTML
 function renderizarResultados(materias) {
 
 
@@ -209,7 +200,7 @@ function renderizarResultados(materias) {
     }
 
     materias.forEach(materia => {
-        // Monta o HTML do seu card (.caixa-sessao)
+        // Monta o HTML do card (.caixa-sessao)
 
         const baixarMateria = materia.texto_original
         ? `<a href="${materia.texto_original}" target="_blank" class="btn-baixar">Baixar Matéria (PDF)</a>`
