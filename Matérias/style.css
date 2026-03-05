@@ -47,11 +47,11 @@
     min-width: 150px;
 }
 
-.selecao-tipo, .selecao-ano, .selecao-numero, .selecao-autor {
+.selecao-tipo, .selecao-ano, .selecao-autor {
     cursor: pointer;
 }
 
-.pesquisar-expressoes {
+.pesquisar-expressoes, .selecao-numero {
     cursor: text;
 }
 

@@ -15,21 +15,24 @@ metal:use-macro="here/main_template/macros/master">
         <h1 class="documentFirstHeading">Pesquisar matéria legislativa</h1>
         <h3 class="documentSecondHeading" style="color: red;">Os campos marcados com * são obrigatórios</h3>
         <p class="descricao">Selecione o tipo de matéria e o ano que ela foi aprovada.</br>
-        Também é possível pesquisar por palavras-chave nas matérias no campo expressões</br>
-        Para fazer nova pesquisa, clique em limpar, preencha novamente os campos e clique em pesquisar.</p>
+        Também é possível pesquisar por palavras-chave nas matérias no campo expressões, como saúde, educação etc.</br>
+        Para fazer nova pesquisa, clique em limpar, preencha novamente os campos e clique em pesquisar.</br>
+        Se nenhum autor for especificado, a pesquisa retornará todas as matérias que foram feitas daquele tipo no ano especificado.</br>
+        </p>
+
         <div class="pesquisa-materias" style="margin-bottom: 20px;">
 
             <div class="grupo-campo">
             <label for="tipo-materia"><strong>Tipo de matéria *</strong></label>
             <select id="tipo-materia" class="selecao-tipo">
-                <option value="">Selecione o tipo de matéria</option>
+                <option value="">Selecione o tipo de matéria (obrigatório)</option>
             </select>
             </div>
 
             <div class="grupo-campo">
             <label for="ano-materia"><strong>Ano da matéria *</strong></label>
             <select id="ano-materia" class="selecao-ano">
-                <option value="">Ano</option>
+                <option value="">Ano (obrigatório)</option>
             </select>
             </div>
 
@@ -40,9 +43,7 @@ metal:use-macro="here/main_template/macros/master">
 
             <div class="grupo-campo">
             <label for="numero-materia"><strong>Número</strong></label>
-            <select id="numero-materia" class="selecao-numero">
-                <option value="">Número</option>
-            </select>
+            <input type="number" step="1" value="" id="numero-materia" class="selecao-numero" placeholder="Número"></input>
             </div>
 
             <div class="grupo-campo">

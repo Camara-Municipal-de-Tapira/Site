@@ -151,7 +151,7 @@ async function pesquisaMateria(anoPesquisado, paginaAtual) {
     const numero = document.getElementById('numero-materia').value.trim();
     const autor = document.getElementById('autor-materia').value;
     const expressoes = document.getElementById('pesquisar-expressoes').value.trim();
-
+    const pagesize = 5;
 
     // 2. Validação dos campos obrigatórios
     // Se "tipo" OU "ano" estiverem vazios, dispara o alerta e para a execução
@@ -168,6 +168,7 @@ async function pesquisaMateria(anoPesquisado, paginaAtual) {
     params.append('tipo', tipo);
     params.append('ano', ano);
     params.append('page', paginaAtual);
+    params.append('page_size', pagesize);
 
     // Adiciona os campos opcionais APENAS se o usuário digitou algo
     if (numero) {
