@@ -6,12 +6,11 @@
     padding: 10px;
 }
 
-p {
+.descricao {
     display: grid;
     align-items: start;
     margin: 20px auto;
     max-width: 800px;
-    padding: 10px;
 }
 
 /* Container principal da pesquisa */
@@ -98,10 +97,30 @@ p {
     background-color: #074F8F;
 }
 
+#lista-materias {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza os cards horizontalmente */
+    width: 100%;
+    max-width: 800px;    /* Mesma largura do seu formulário */
+    margin: 0 auto;
+}
+
+#controles-paginacao {
+display: flex;
+justify-content: center; /* Centraliza os botões e o texto da página */
+align-items: center;
+gap: 20px;
+width: 100%;
+max-width: 800px;
+margin: 30px auto;       /* Centraliza e dá espaço do conteúdo acima */
+}
+
 /*cards de resposta -- Remover ao subir para o site*/
 
 .caixa-sessao {
 
+    width: 100%;
     border: 1px solid #ddd;
     border-left: 5px solid #0056b3; /* Faixa azul na esquerda */
     background-color: #f9f9f9;
