@@ -146,14 +146,12 @@ async function pesquisaMateria(anoPesquisado, paginaAtual) {
     const expressoes = document.getElementById('pesquisar-expressoes').value.trim();
     const pagesize = 4;
 
-    // 2. Validação dos campos obrigatórios
-    // Se "tipo" OU "ano" estiverem vazios, dispara o alerta e para a execução
     if (!tipo || !ano) {
         alert("Por favor, preencha os campos obrigatórios: Tipo e Ano.");
         return; // O 'return' faz o script parar de rodar aqui
     }
 
-    // 3. Montar a URL dinamicamente com os parâmetros
+
     const baseUrl = 'https://sapl.tapira.mg.leg.br/api/materia/materialegislativa/';
     const params = new URLSearchParams();
 
@@ -168,7 +166,7 @@ async function pesquisaMateria(anoPesquisado, paginaAtual) {
         params.append('numero', numero);
     }
     if (autor) {
-        params.append('autores', autor); // Verifique se o nome exato na API é 'autor' ou 'autoria'
+        params.append('autores', autor);
     }
     if (expressoes) {
         params.append('ementa__icontains', expressoes);
@@ -177,7 +175,7 @@ async function pesquisaMateria(anoPesquisado, paginaAtual) {
 
     const urlCompleta = `${baseUrl}?${params.toString()}`;
 
-    // 4. Fazer a requisição na API
+
     try {
 
         console.log("Buscando dados em:", urlCompleta);
@@ -190,7 +188,7 @@ async function pesquisaMateria(anoPesquisado, paginaAtual) {
 
         const dados = await resposta.json();
 
-        // APIs do SAPL geralmente retornam os dados paginados dentro de um array chamado "results"
+
         const materias = dados.results || dados;
 
         for (const indicacao of materias){
@@ -202,7 +200,7 @@ async function pesquisaMateria(anoPesquisado, paginaAtual) {
             }
         }
 
-        // 5. Enviar os dados para a função que vai desenhar os cards na tela
+
         renderizarResultados(dados);
 
     } catch (erro) {
@@ -211,7 +209,7 @@ async function pesquisaMateria(anoPesquisado, paginaAtual) {
     }
 }
 
-// Função para desenhar o HTML
+
 function renderizarResultados(dados) {
 
     const btnAnterior = document.getElementById('btn-anterior');
@@ -220,7 +218,7 @@ function renderizarResultados(dados) {
     const divPaginacao = document.getElementById('controles-paginacao');
     const containerResultados = document.getElementById('lista-sessoes');
 
-    containerResultados.innerHTML = ''; // Limpa os resultados da busca anterior
+    containerResultados.innerHTML = '';
 
     const listaMaterias = dados.results || [];
 
@@ -234,7 +232,7 @@ function renderizarResultados(dados) {
         }
         try{
             listaMaterias.forEach(materia => {
-            // Monta o HTML do card (.caixa-sessao)
+
 
             const baixarMateria = materia.texto_original
             ? `<a href="${materia.texto_original}" target="_blank" class="btn-baixar">Baixar Matéria (PDF)</a>`
@@ -250,7 +248,7 @@ function renderizarResultados(dados) {
             ${baixarMateria}
             </div>
             `;
-            // Adiciona o card na tela
+
             containerResultados.innerHTML += cardHTML;
         });
 

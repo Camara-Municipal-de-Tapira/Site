@@ -548,12 +548,12 @@ footer p {
       margin: 1.5rem 2%;
     }
     
-    /* 1. Esconde o menu inicialmente para o slideToggle funcionar */
+    /* Esconde o menu inicialmente para o slideToggle funcionar */
     #main-navigation {
         display: none; 
         clear: both;
         width: 100%;
-        background: #3259a7; /* Cor sólida de fundo */
+        background: #3259a7;
     }
 
 }
@@ -598,7 +598,7 @@ footer p {
     margin-bottom: 8px;
 }
 .card-materia p {
-    margin: 0 0 8px 0; /* Adicionado um respiro entre os parágrafos */
+    margin: 0 0 8px 0;
     line-height: 1.5;
     color: #444;
 }
@@ -616,9 +616,9 @@ footer p {
 #lista-sessoes {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Centraliza os cards horizontalmente */
+    align-items: flex-start;
     width: 100%;
-    max-width: 800px;    /* Mesma largura do seu formulário */
+    max-width: 800px;
     margin: 0 auto;
 }
             
@@ -626,7 +626,7 @@ footer p {
     
     width: 100%;
     border: 1px solid #ddd;
-    border-left: 5px solid #0056b3; /* Faixa azul na esquerda */
+    border-left: 5px solid #0056b3;
     background-color: #f9f9f9;
     padding: 15px;
     margin-bottom: 15px;
@@ -648,7 +648,7 @@ footer p {
     display: inline-block;
     margin-top: 10px;
     padding: 8px 15px;
-    background-color: #38b6ff; /* Vermelho PDF */
+    background-color: #38b6ff;
     color: white;
     text-decoration: none;
     border-radius: 4px;
@@ -697,7 +697,7 @@ footer p {
 .botao-pesquisar {
   background-color: #38b6ff;
   display: inline-block;
-  color: white; /* texto em branco */
+  color: white;
   padding: 9px 20px;
   font-size: 16px;
   font-weight: bold;
@@ -734,41 +734,14 @@ body.section-front-page .documentDescription {
 
 @media (max-width: 768px) {
     .cover-banner-tile.tile-content {
-        display: inline-block !important; /* Permite que fiquem na mesma linha */
+        display: inline-block !important;
         vertical-align: top;
         visibility: visible !important;
-        width: 50%; /* Metade da tela */
-        margin: 0; /* Remove o auto para não forçar a quebra de linha */
-        float: left; /* Garante o encaixe lateral */
-    }
-}
-/*
-@media (max-width: 768px) {
-    .cover-banner-tile.tile-content {
-        display: block !important;
-        visibility: visible !important;
         width: 50%;
-        height: auto;
-        margin: 0 auto;
+        margin: 0;
+        float: left;
     }
 }
-*/
-
-/*
-.documentFirstHeading, .documentSecondHeading {
-    display: grid;
-    align-items: start;
-    margin: 0 auto;
-    max-width: 800px;
-    padding: 10px;
-}
-.descricao {
-    display: grid;
-    align-items: start;
-    margin: 20px auto;
-    max-width: 800px;
-}*/
-
 
 /* Container principal da pesquisa */
 .pesquisa-materias {
@@ -780,15 +753,15 @@ body.section-front-page .documentDescription {
     margin: 0 auto;
 }
 
-/* NOVO: A caixinha que agrupa a label e o input */
+
 .grupo-campo {
     display: flex;
-    flex-direction: column; /* Coloca a label em cima e o campo embaixo */
-    gap: 5px; /* Dá um espacinho de respiro entre a label e o campo */
+    flex-direction: column;
+    gap: 5px;
 }
 
 .grupo-campo label {
-    font-weight: bold; /* Deixa as labels em negrito (opcional, mas fica bom) */
+    font-weight: bold;
     color: #333;
 }
 
@@ -839,12 +812,12 @@ body.section-front-page .documentDescription {
 
 #controles-paginacao {
     display: flex;
-    justify-content: center; /* Centraliza os botões e o texto da página */
+    justify-content: center;
     align-items: center;
     gap: 20px;
     width: 100%;
     max-width: 800px;
-    margin: 30px auto;       /* Centraliza e dá espaço do conteúdo acima */
+    margin: 30px auto;
 }
 
 .btn-baixar {
@@ -874,8 +847,8 @@ body.section-front-page .documentDescription {
 /*Menus dropdown*/
 
 #main-navigation {
-    background: #0b3d6d; /* azul institucional refinado */
-    padding: 20px; /* aumenta a largura do menu*/
+    background: #0b3d6d;
+    padding: 20px;
 }   
   
 #main-navigation > ul > li > a {
@@ -914,7 +887,7 @@ body.section-front-page .documentDescription {
 }
 
 #main-navigation ul ul {
-    min-width: 200px;           /* largura maior */
+    min-width: 200px;
     padding: 20px;
 }
 
@@ -925,10 +898,6 @@ body.section-front-page .documentDescription {
     transition: 0.2s ease;
 }
 
-/*#main-navigation ul ul li:hover {
-    background-color: navy;
-    color: black;
-}*/
 
 #main-navigation ul ul li:last-child {
     border-bottom: none;
@@ -937,5 +906,5 @@ body.section-front-page .documentDescription {
 #main-navigation li:hover > ul {
     display: block;
     column-count: 2;
-    gap: 8px 20px;                   /* espaçamento vertical e horizontal */
+    gap: 8px 20px;
 }
