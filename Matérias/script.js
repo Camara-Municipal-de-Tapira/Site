@@ -170,7 +170,7 @@ async function pesquisaMateria(anoPesquisado, paginaAtual) {
     params.append('ano', ano);
     params.append('page', paginaAtual);
     params.append('page_size', pagesize);
-    params.append('o', '-data_apresentacao');
+    params.append('o', '-numero');
 
     // Adiciona os campos opcionais APENAS se o usuário digitou algo
     if (numero) {
