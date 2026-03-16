@@ -1,5 +1,12 @@
 let paginaAtual = 1;
 
+function formatarDataBR(dataISO) {
+    if (!dataISO) return 'N/A';
+    // Divide a string 2024-05-20 em [2024, 05, 20]
+    const [ano, mes, dia] = dataISO.split('-');
+    return `${dia}/${mes}/${ano}`;
+}
+
 document.addEventListener('DOMContentLoaded', () =>{
 
     const selectAno = document.getElementById('ano-materia');
@@ -163,6 +170,7 @@ async function pesquisaMateria(anoPesquisado, paginaAtual) {
     params.append('ano', ano);
     params.append('page', paginaAtual);
     params.append('page_size', pagesize);
+    params.append('o', '-data_apresentacao');
 
     // Adiciona os campos opcionais APENAS se o usuário digitou algo
     if (numero) {
@@ -237,6 +245,8 @@ function renderizarResultados(dados) {
             listaMaterias.forEach(materia => {
             // Monta o HTML do card (.caixa-sessao)
 
+            const dataFormatada = formatarDataBR(materia.data_apresentacao);
+
             const baixarMateria = materia.texto_original
             ? `<a href="${materia.texto_original}" target="_blank" class="btn-baixar">Baixar Matéria (PDF)</a>`
             : `<span style="color:#777; font-size:0.9em; display:inline-block;
@@ -246,7 +256,7 @@ function renderizarResultados(dados) {
             <div class="caixa-sessao">
             <h3>${materia.__str__ || 'Matéria sem título'}</h3>
             <p><strong>Ementa:</strong> ${materia.ementa || 'Sem ementa disponível'}</p>
-            <p><strong>Data de Apresentação:</strong> ${materia.data_apresentacao || 'N/A'}</p>
+            <p><strong>Data de Apresentação:</strong> ${dataFormatada} </p>
             <p><strong>Autor:</strong> ${materia.nomeAutorReal}</p>
             ${baixarMateria}
             </div>
