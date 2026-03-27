@@ -115,7 +115,7 @@
 
 .tema-pm3 .galleria-info-title {
     display: inline-block;
-    font: bold 2.5em/1.1 open_sanssemibold, arial, sans-serif;
+    font: bold 1.5em/1.1 open_sanssemibold, arial, sans-serif;
     margin: 0;
     margin-top: 0px;
     margin-bottom: 10px;
@@ -313,7 +313,6 @@
 .tema-pm3 .notouch .galleria-image-nav-left:hover span, .notouch .galleria-image-nav-right:hover span {
     background-color: white;
     color: #404040;
-    box-shadow: 
 }
 
 .tema-pm3 .galleria-thumb-nav-left,.galleria-thumb-nav-right {
@@ -416,7 +415,7 @@
 }
 
 .tema-pm3 .notouch .galleria-stage:hover .galleria-images img {
-    transform: scale(1.2);
+    transform: scale(1);
 }
 
 .tema-pm3 .galleria-thumbnails .galleria-image:last-child .img {

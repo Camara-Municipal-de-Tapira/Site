@@ -1,4 +1,5 @@
-Site.carregarAno = function() {
+
+export function carregarAno() {
 
     var anos = document.getElementById('selecao-ano');
     var anoAtual = new Date().getFullYear();
@@ -12,8 +13,7 @@ Site.carregarAno = function() {
     }
 };
 
-Site.limparFormulario = function(){
-//export function limparFormulario(seletorForm) {
+export function limparFormulario(seletorForm){
 
     var $form = $(seletorForm);
 
@@ -24,7 +24,12 @@ Site.limparFormulario = function(){
     console.log("Campos limpos");
 };
 
-export function carregarAutor() {
+export function forceHttps(url) {
+    if (!url) return url;
+    return url.replace(/^http:/, 'https:');
+}
+
+export async function carregarAutor() {
 
     const selectAutor = document.getElementById('selecao-autor');
     let urlAutor = `https://sapl.tapira.mg.leg.br/api/base/autor/?tipo=2`;
@@ -36,7 +41,7 @@ export function carregarAutor() {
 
         while (urlAutor && contadorPagina <5){
 
-            const resposta = await fetch(urlAutor);
+            const resposta = await fetch(forceHttps(urlAutor));
             if(!resposta.ok){
                 break;
             }
@@ -51,10 +56,10 @@ export function carregarAutor() {
         }
 
         todosAutores.forEach(autor =>{
-           const opcaoHTML = document.createElement('option') ;
-           opcaoHTML.value = autor.id;
-           opcaoHTML.textContent = autor.nome;
-           selectAutor.appendChild(opcaoHTML);
+            const opcaoHTML = document.createElement('option') ;
+            opcaoHTML.value = autor.id;
+            opcaoHTML.textContent = autor.nome;
+            selectAutor.appendChild(opcaoHTML);
 
 
         });
@@ -65,3 +70,34 @@ export function carregarAutor() {
     }
 
 };
+
+export function formatarDataBR(dataISO) {
+    if (!dataISO) return 'N/A';
+    // Divide a string 2024-05-20 em [2024, 05, 20]
+    const [ano, mes, dia] = dataISO.split('-');
+    return `${dia}/${mes}/${ano}`;
+}
+
+export function escaparHTML(texto) {
+    if (!texto) return "";
+    return texto.toString()
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+export async function pegarNomeDoAutor(idAutor) {
+    const baseUrl = 'https://sapl.tapira.mg.leg.br/api';
+    if (!idAutor) return "Sem autor";
+    try {
+        const urlAutor = `${baseUrl}/base/autor/${idAutor}/`;
+        const response = await fetch(urlAutor);
+        const data = await response.json();
+        return data.nome || "Autor Desconhecido";
+    } catch (erro) {
+        console.error("Erro ao buscar autor", erro);
+        return "Autor Desconhecido";
+    }
+}

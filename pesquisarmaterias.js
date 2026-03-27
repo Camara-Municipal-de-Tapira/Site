@@ -1,15 +1,10 @@
-let paginaAtual = 1;
+import { formatarDataBR, carregarAutor, carregarAno, pegarNomeDoAutor } from './utils.js';
 
-function formatarDataBR(dataISO) {
-    if (!dataISO) return 'N/A';
-    // Divide a string 2024-05-20 em [2024, 05, 20]
-    const [ano, mes, dia] = dataISO.split('-');
-    return `${dia}/${mes}/${ano}`;
-}
+let paginaAtual = 1;
 
 document.addEventListener('DOMContentLoaded', () =>{
 
-    const selectAno = document.getElementById('ano-materia');
+    const selectAno = document.getElementById('selecao-ano');
     const selectTipo = document.getElementById('tipo-materia');
     const anoAtual = new Date().getFullYear();
     const anoInicial = 2021;
@@ -25,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () =>{
     let anoPesquisado = anoAtual;
 
     carregarTiposMateria();
-    carregarNomeAutor();
+    carregarAutor();
 
     document.getElementById('btn-pesquisar').addEventListener('click', () => {
         paginaAtual = 1;
@@ -90,66 +85,13 @@ async function carregarTiposMateria(){
     }
 }
 
-async function carregarNomeAutor(){
-
-    let idAutor = "";
-    const selectAutor = document.getElementById('autor-materia');
-    let urlAutor = `https://sapl.tapira.mg.leg.br/api/base/autor/${idAutor}?tipo=2`;
-    let todosAutores = [];
-
-    try{
-
-        let contadorPagina = 0;
-
-        while(urlAutor && contadorPagina < 5)  {
-
-            const resposta = await fetch(urlAutor);
-            if(!resposta.ok){
-                break;
-            }
-
-            const dados = await resposta.json();
-            const listaDaPagina = dados.results || [];
-            todosAutores = todosAutores.concat(listaDaPagina);
-
-            urlAutor = dados.pagination && dados.pagination.links ? dados.pagination.links.next : null;
-            contadorPagina++;
-        }
-
-        todosAutores.forEach(autor => {
-            const opcaoHTML = document.createElement('option');
-            opcaoHTML.value = autor.id;
-            opcaoHTML.textContent = autor.nome;
-            selectAutor.appendChild(opcaoHTML);
-        });
-
-
-    } catch(erro){
-        console.error("Falha ao carregar os autores:", erro)
-
-    }
-
-}
-
-async function pegarNomeDoAutor(idAutor){
-    try {
-        const urlAutor = `https://sapl.tapira.mg.leg.br/api/base/autor/${idAutor}/`;
-        const response = await fetch(urlAutor);
-        const data = await response.json();
-        return data.nome || "Autor Desconhecido";
-    } catch (erro){
-        console.error("Erro ao buscar autor", erro);
-        return "Erro ao carregar nomes dos autores.";
-    }
-}
-
 async function pesquisaMateria(anoPesquisado, paginaAtual) {
 
     // 1. Capturar os valores digitados/selecionados pelo usuário
     const tipo = document.getElementById('tipo-materia').value.trim();
-    const ano = document.getElementById('ano-materia').value.trim();
+    const ano = document.getElementById('selecao-ano').value.trim();
     const numero = document.getElementById('numero-materia').value.trim();
-    const autor = document.getElementById('autor-materia').value;
+    const autor = document.getElementById('selecao-autor').value;
     const expressoes = document.getElementById('pesquisar-expressoes').value.trim();
     const pagesize = 5;
 

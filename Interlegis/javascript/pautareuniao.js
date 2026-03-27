@@ -1,4 +1,6 @@
+var Site = Site || {};
 
+// Peneira de Segurança: Transforma tags HTML em texto inofensivo
 function escaparHTML(texto) {
     if (!texto) return "";
     return texto.toString()
@@ -19,6 +21,7 @@ const baseUrl = 'https://sapl.tapira.mg.leg.br/api';
     }
 
     //Busca o nome do autor pelo ID
+    
     async function pegarNomeDoAutor(idAutor) {
     if (!idAutor) return "Sem autor";
         try {
@@ -42,11 +45,11 @@ const baseUrl = 'https://sapl.tapira.mg.leg.br/api';
     for (const item of listaItens) {
         if (item.materia) {
             try {
-
+                // 1. Busca os detalhes do projeto (texto, ementa, lista de autores)
                 const resMateria = await fetch(`${baseUrl}/materia/materialegislativa/${item.materia}/`);
                 const materia = await resMateria.json();
 
-                // Verifica se tem autor e busca o nome do primeiro
+                // 2. Verifica se tem autor e busca o nome do primeiro
                 let nomeAutorReal = "Sem autor";
                 if (materia.autores && materia.autores.length > 0) {
                     nomeAutorReal = await pegarNomeDoAutor(materia.autores[0]);
@@ -57,7 +60,7 @@ const baseUrl = 'https://sapl.tapira.mg.leg.br/api';
                     }
                 }
 
-                // Monta o Card final com o Autor incluído
+                // 3. Monta o Card final com o Autor incluído
                 html += `
                     <div class="card-materia ${classeCssAdicional}">
                     <h3>${escaparHTML(materia.__str__ || 'Matéria')}</h3>

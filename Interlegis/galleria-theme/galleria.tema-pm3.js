@@ -23,7 +23,7 @@ Galleria.addTheme({
         fullscreenDoubleTap: false,
         idleMode: false,
         carousel: false,
-        autoplay: true,
+        autoplay: false,
         _toggleInfo: false
     },
     init: function(options) {

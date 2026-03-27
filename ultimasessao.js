@@ -1,37 +1,6 @@
-// Peneira de Segurança: Transforma tags HTML em texto inofensivo
-function escaparHTML(texto) {
-    if (!texto) return "";
-    return texto.toString()
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
+import { formatarDataBR, pegarNomeDoAutor, escaparHTML } from './utils.js';
 
 const baseUrl = 'https://sapl.tapira.mg.leg.br/api';
-
-// Formata a data de YYYY-MM-DD para DD/MM/YYYY
-function formatarData(dataIso) {
-    if (!dataIso) return '';
-    const partes = dataIso.split('-');
-    return `${partes[2]}/${partes[1]}/${partes[0]}`;
-}
-
-// NOVA FUNÇÃO: Busca o nome do autor pelo ID
-async function pegarNomeDoAutor(idAutor) {
-    if (!idAutor) return "Sem autor";
-    try {
-        const urlAutor = `${baseUrl}/base/autor/${idAutor}/`;
-        const response = await fetch(urlAutor);
-        const data = await response.json();
-        return data.nome || "Autor Desconhecido";
-    } catch (erro) {
-        console.error("Erro ao buscar autor", erro);
-        return "Autor Desconhecido";
-    }
-}
-
 // Função que monta os Cards (agora com o Autor)
 async function montarHtmlMaterias(listaItens, classeCssAdicional) {
     if (!listaItens || listaItens.length === 0) {
@@ -95,7 +64,7 @@ async function buscarUltimaReuniaoCompleta() {
 
         const ultimaSessao = jsonSessao.results[0];
         tituloSessao.innerText = `${ultimaSessao.__str__ || ''}`;
-        dataSessao.innerText = `Realizada em: ${formatarData(ultimaSessao.data_inicio)}`;
+        dataSessao.innerText = `Realizada em: ${formatarDataBR(ultimaSessao.data_inicio)}`;
 
         containerExpediente.innerHTML = "<p><em>Buscando autores e ementas do Expediente...</em></p>";
         containerOrdemDia.innerHTML = "<p><em>Buscando autores e ementas da Ordem do Dia...</em></p>";

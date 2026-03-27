@@ -7,22 +7,24 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <script src="script.js"></script>
+    
+    <script type="module" src="utils.js"></script>
+    <script type="module" src="respostas.js"></script>
 
     <h1>Respostas de indicações</h1>
     <p>Respostas das indicações feitas pelos vereadores à Prefeitura.</br>
     Selecione o autor e o ano da indicação para visualizar as respostas.</p>
+    <p style="color: red;">Os campos marcados com * são obrigatórios</p>
 
     <div id="pesquisa-autor">
-        <label for="autor">Autor:</label>
+        <label for="autor">*Autor:</label>
         <select id="selecao-autor">
             <option value="">Selecione o autor</option>
         </select>
     </div>
 
     <div id="pesquisa-ano">
-        <label for="ano">Ano:</label>
+        <label for="ano">*Ano:</label>
         <select id="selecao-ano">
             <option value="">Selecione o ano</option>
             <option value="2026">2026</option>

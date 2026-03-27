@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt" lang="pt"
-metal:use-macro="here/main_template/macros/master">
+<html lang="pt-BR">
 <head>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -9,8 +11,8 @@ metal:use-macro="here/main_template/macros/master">
         <!--<link rel="stylesheet" type="text/css" tal:attributes="href string:${portal_url}/++theme++Interlegis/css/style.css">
         <script type="text/javascript" tal:attributes="src string:${portal_url}/++theme++Azul/javascript/buscarmaterias.js"></script>-->
 
-
-        <script src="script.js"></script>
+        <script type="module" src="utils.js"></script>
+        <script type="module" src="pesquisarmaterias.js"></script>
 
         <h1 class="documentFirstHeading">Pesquisar matéria legislativa</h1>
         <h3 class="documentSecondHeading" style="color: red;">Os campos marcados com * são obrigatórios</h3>
@@ -30,8 +32,8 @@ metal:use-macro="here/main_template/macros/master">
             </div>
 
             <div class="grupo-campo">
-            <label for="ano-materia"><strong>Ano da matéria *</strong></label>
-            <select id="ano-materia" class="selecao-ano">
+            <label for="selecao-ano"><strong>Ano da matéria *</strong></label>
+            <select id="selecao-ano" class="selecao-ano">
                 <option value="">Ano (obrigatório)</option>
             </select>
             </div>
@@ -47,8 +49,8 @@ metal:use-macro="here/main_template/macros/master">
             </div>
 
             <div class="grupo-campo">
-            <label for="autor-materia"><strong>Autor</strong></label>
-            <select id="autor-materia" class="selecao-autor">
+            <label for="selecao-autor"><strong>Autor</strong></label>
+            <select id="selecao-autor" class="selecao-autor">
                 <option value="">Selecione o autor</option>
             </select>
             </div>

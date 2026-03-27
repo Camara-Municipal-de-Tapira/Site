@@ -1,3 +1,5 @@
+import { carregarAutor, forceHttps } from './utils.js';
+
 let paginaAtual = 1;
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -33,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.getElementById('btn-limpar').addEventListener('click', () => {
         // limpa todos os campos
-
+                       
         document.getElementById('selecao-ano').value = "";
         document.getElementById('selecao-autor').value = "";
         document.getElementById('lista-sessoes').innerHTML = "";
@@ -43,53 +45,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 });
-
-function forceHttps(url) {
-    if (!url) return url;
-    return url.replace(/^http:/, 'https:');
-}
-
-async function carregarAutor() {
-
-    const selectAutor = document.getElementById('selecao-autor');
-    let urlAutor = `https://sapl.tapira.mg.leg.br/api/base/autor/?tipo=2`;
-    let todosAutores = [];
-
-    try {
-
-        let contadorPagina = 0;
-
-        while (urlAutor && contadorPagina <5){
-
-            const resposta = await fetch(forceHttps(urlAutor));
-            if(!resposta.ok){
-                break;
-            }
-
-            const dados = await resposta.json();
-            const listaDaPagina = dados.results || [];
-            todosAutores = todosAutores.concat(listaDaPagina);
-
-            urlAutor = dados.pagination && dados.pagination.links ? dados.pagination.links.next : null;
-            contadorPagina++;
-
-        }
-
-        todosAutores.forEach(autor =>{
-            const opcaoHTML = document.createElement('option') ;
-            opcaoHTML.value = autor.id;
-            opcaoHTML.textContent = autor.nome;
-            selectAutor.appendChild(opcaoHTML);
-
-
-        });
-
-    } catch (erro) {
-        console.error("Falha ao carregar os autores:", erro)
-
-    }
-
-};
 
 function carregarSessoes(ano, pagina) {
     const listaSessoes = document.getElementById("lista-sessoes");
@@ -136,6 +91,7 @@ function carregarSessoes(ano, pagina) {
 }
 
 function renderizarResultados(data) {
+
     const btnAnterior = document.getElementById("btn-anterior");
     const btnProximo = document.getElementById("btn-proximo");
     const infoPagina = document.getElementById('info-pagina');
@@ -185,15 +141,5 @@ function renderizarResultados(data) {
     if (infoPagina) {
         infoPagina.textContent = `Página ${data.pagination.page} de ${data.pagination.total_pages}`;
     }
-    
-    /*
-    btnAnterior.disabled = (data.pagination.links.previous === null);
-    btnProximo.disabled = (data.pagination.links.next === null);
-
-    btnAnterior.style.opacity = btnAnterior.disabled ? "0.5" : "1";
-    btnProximo.style.opacity = btnProximo.disabled ? "0.5" : "1";
-
-    infoPagina.textContent = `Página ${data.pagination.page} de ${data.pagination.total_pages}`;*/
-
     divPaginacao.style.display = "flex";
 }

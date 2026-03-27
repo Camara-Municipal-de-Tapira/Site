@@ -490,6 +490,15 @@ footer p {
 
 /* Landscape phones and down */
 @media (max-width: 767px) {
+    
+    .documentFirstHeading {
+        width: 360px;     
+    }
+    
+    #parent-fieldname-text.plain {
+        width: 360px;    
+    }
+    
     #portal-logo {
       display: inline-block;
       font-size: 90%;
@@ -548,12 +557,12 @@ footer p {
       margin: 1.5rem 2%;
     }
     
-    /* Esconde o menu inicialmente para o slideToggle funcionar */
+    /* 1. Esconde o menu inicialmente para o slideToggle funcionar */
     #main-navigation {
         display: none; 
         clear: both;
         width: 100%;
-        background: #3259a7;
+        background: #3259a7; /* Cor sólida de fundo */
     }
 
 }
@@ -578,6 +587,7 @@ footer p {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    
 }
 
 .card-materia {
@@ -586,7 +596,9 @@ footer p {
     padding: 15px;
     background-color: #fcfcfc;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    
 }
+
 
 .card-expediente {
     border-left-color: #f57c00;
@@ -598,10 +610,11 @@ footer p {
     margin-bottom: 8px;
 }
 .card-materia p {
-    margin: 0 0 8px 0;
+    margin: 0 0 8px 0; /* Adicionado um respiro entre os parágrafos */
     line-height: 1.5;
     color: #444;
 }
+
 .resultado-votacao {
     display: inline-block;
     margin-top: 5px;
@@ -613,30 +626,39 @@ footer p {
     font-weight: bold;
 }
 
+/* Container principal da pesquisa */
+.pesquisa-materias {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Duas colunas */
+    gap: 20px;
+    align-items: start; /* Alterado de 'center' para 'start' para alinhar os topos */
+    max-width: 800px;
+    
+}
+
 #lista-sessoes {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
     width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
+    max-width: 800px;    
 }
-            
+
+
 .caixa-sessao {
     
-    width: 100%;
-    border: 1px solid #ddd;
-    border-left: 5px solid #0056b3;
-    background-color: #f9f9f9;
+    border-left: 4px solid #005b9f;
+    border-radius: 4px;
     padding: 15px;
+    background-color: #fcfcfc;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     margin-bottom: 15px;
     margin: 20px 0;
-    border-radius: 4px;
-    font-family: Arial, sans-serif;
+    transition: transform 0.3s ease-out;
+    
 }
 
 .caixa-sessao:hover{
-    transform: scale(1.0);
+    transform: scale(1.1);
 }
 
 .caixa-sessao h3 {
@@ -644,19 +666,30 @@ footer p {
     color: #333;
 }
 
-.btn-ata {
+
+.btn-ata, .btn-baixar {
     display: inline-block;
     margin-top: 10px;
     padding: 8px 15px;
-    background-color: #38b6ff;
+    background-color: #38b6ff; 
     color: white;
     text-decoration: none;
     border-radius: 4px;
     font-weight: bold;
 }
+
 .btn-ata:hover {
     background-color:#61baed;
     color: white;
+}
+
+.btn-baixar:hover {
+    background-color: #61baed;
+    color: white;
+}
+
+a.btn-ata, a.btn-baixar {
+    color: white !important;
 }
 
 .area-pesquisa {
@@ -691,13 +724,13 @@ footer p {
 }
 
 .caixa-selecao:hover {
-    background-color: ##018ee9;
+    background-color: #018ee9;
 }
 
 .botao-pesquisar {
   background-color: #38b6ff;
   display: inline-block;
-  color: white;
+  color: white; /* texto em branco */
   padding: 9px 20px;
   font-size: 16px;
   font-weight: bold;
@@ -710,10 +743,6 @@ footer p {
 
 .botao-pesquisar:hover {
   background-color: #008ee0;
-}
-
-.galleria-info-description {
-    display: none !important;
 }
 
 /*Apaga aquele escrito de página inicial feito por Interlegis logo no início da página */
@@ -734,35 +763,13 @@ body.section-front-page .documentDescription {
 
 @media (max-width: 768px) {
     .cover-banner-tile.tile-content {
-        display: inline-block !important;
+        display: inline-block !important; /* Permite que fiquem na mesma linha */
         vertical-align: top;
         visibility: visible !important;
-        width: 50%;
-        margin: 0;
-        float: left;
+        width: 50%; /* Metade da tela */
+        margin: 0; /* Remove o auto para não forçar a quebra de linha */
+        float: left; /* Garante o encaixe lateral */
     }
-}
-
-/* Container principal da pesquisa */
-.pesquisa-materias {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Duas colunas */
-    gap: 20px;
-    align-items: start; /* Alterado de 'center' para 'start' para alinhar os topos */
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-
-.grupo-campo {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.grupo-campo label {
-    font-weight: bold;
-    color: #333;
 }
 
 /* Campos de pesquisa e dropdowns */
@@ -812,27 +819,11 @@ body.section-front-page .documentDescription {
 
 #controles-paginacao {
     display: flex;
-    justify-content: center;
+    justify-content: center; /* Centraliza os botões e o texto da página */
     align-items: center;
     gap: 20px;
     width: 100%;
     max-width: 800px;
-    margin: 30px auto;
-}
-
-.btn-baixar {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 8px 15px;
-    background-color: #2795F5; 
-    color: white;
-    border-radius: 4px;
-    font-weight: bold;
-}
-
-.btn-baixar:hover {
-    background-color: #074F8F;
-    color: white;
 }
 
 .cover-banner-tile {
@@ -847,8 +838,8 @@ body.section-front-page .documentDescription {
 /*Menus dropdown*/
 
 #main-navigation {
-    background: #0b3d6d;
-    padding: 20px;
+    background: #0b3d6d; 
+    padding: 20px; /* aumenta a largura do menu*/
 }   
   
 #main-navigation > ul > li > a {
@@ -887,7 +878,7 @@ body.section-front-page .documentDescription {
 }
 
 #main-navigation ul ul {
-    min-width: 200px;
+    min-width: 200px;           /* largura maior */
     padding: 20px;
 }
 
@@ -898,7 +889,6 @@ body.section-front-page .documentDescription {
     transition: 0.2s ease;
 }
 
-
 #main-navigation ul ul li:last-child {
     border-bottom: none;
 }
@@ -906,5 +896,16 @@ body.section-front-page .documentDescription {
 #main-navigation li:hover > ul {
     display: block;
     column-count: 2;
-    gap: 8px 20px;
+    gap: 8px 20px;                   /* espaçamento vertical e horizontal */
+}
+
+
+.galleria-info-description {
+    display: none !important;
+}
+
+.galleria-container {
+    height: 350px !important; 
+    background: #fff !important; 
+    overflow: visible !important;
 }

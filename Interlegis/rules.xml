@@ -73,7 +73,7 @@
         </replace>
         <after theme-children="/html/body" css:content-children="#plone-analytics" />
         <after css:theme-children="body">
-        <script src="++theme++Interlegis/javascript/script.js"></script>
+        
 </after>
     </rules>
 

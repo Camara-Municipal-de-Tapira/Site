@@ -15,12 +15,13 @@ $(document).ready(function() {
 
     });*/
     
-
+    // Substitua o bloco do clique por este:
     $(".menu-button button").on("click", function() {
         $(this).toggleClass("menuAtivo");
-
+        // Em vez de #column-one, vamos abrir o navigation
         $("#main-navigation").slideToggle(); 
-
+        // Se quiser manter o comportamento da coluna um:
+        // $("#column-one").slideToggle(); 
     });
     
     //Collapse menu according to screen size

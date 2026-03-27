@@ -1,19 +1,9 @@
+import { escaparHTML } from './utils.js'; 
+ 
  let paginaAtual = 1;
  let anoPesquisado = "";
 
-
- function escaparHTML(texto) {
-
-     if (!texto) return "";
-     return texto.toString()
-     .replace(/&/g, "&amp;")
-     .replace(/</g, "&lt;")
-     .replace(/>/g, "&gt;")
-     .replace(/"/g, "&quot;")
-     .replace(/'/g, "&#039;");
- }
-
- document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
 
      const selectAno = document.getElementById('ano-ata');
 
