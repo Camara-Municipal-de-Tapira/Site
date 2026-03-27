@@ -13,17 +13,6 @@ export function carregarAno() {
     }
 };
 
-export function limparFormulario(seletorForm){
-
-    var $form = $(seletorForm);
-
-    $form.find('input:text, input:password, textarea').val('');
-
-    $form.find('select').prop('selectedIndex', 0);
-
-    console.log("Campos limpos");
-};
-
 export function forceHttps(url) {
     if (!url) return url;
     return url.replace(/^http:/, 'https:');
