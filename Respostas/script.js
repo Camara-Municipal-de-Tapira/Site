@@ -36,6 +36,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
         document.getElementById('selecao-ano').value = "";
         document.getElementById('selecao-autor').value = "";
+        document.getElementById('lista-sessoes').innerHTML = "";
+        document.getElementById('info-pagina').innerHTML = "";
+        document.getElementById('controles-paginacao').style.display = "none";
     });
 
 
@@ -165,14 +168,28 @@ function renderizarResultados(data) {
         </div>`;
         listaSessoes.innerHTML += cardHTML;
     });
-
+    
+    if(btnAnterior && btnProximo){
+        btnAnterior.disabled = !data.pagination.links.previous;
+        btnProximo.disabled = !data.pagination.links.next;
+        
+        btnAnterior.style.opacity = btnAnterior.disabled ? "0.5" : "1";
+        btnProximo.style.opacity = btnProximo.disabled ? "0.5" : "1";
+        
+    }
+    
+    if (infoPagina) {
+        infoPagina.textContent = `Página ${data.pagination.page} de ${data.pagination.total_pages}`;
+    }
+    
+    /*
     btnAnterior.disabled = (data.pagination.links.previous === null);
     btnProximo.disabled = (data.pagination.links.next === null);
 
     btnAnterior.style.opacity = btnAnterior.disabled ? "0.5" : "1";
     btnProximo.style.opacity = btnProximo.disabled ? "0.5" : "1";
 
-    infoPagina.textContent = `Página ${data.pagination.page} de ${data.pagination.total_pages}`;
+    infoPagina.textContent = `Página ${data.pagination.page} de ${data.pagination.total_pages}`;*/
 
     divPaginacao.style.display = "flex";
 }
