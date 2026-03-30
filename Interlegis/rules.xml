@@ -66,10 +66,10 @@
         <replace css:content-children="#portal-footer" css:theme-children="#footer-info .layout-wrapper" />
         <replace css:content-children="#portal-colophon" css:theme-children="#footer-colophon .layout-wrapper" />
         <replace css:content-children=".colophon-logo.interlegis">
-            <img src="++theme++Interlegis/img/interlegis-footer.png" alt="Logotipo do Interlegis"/>
+            <img src="++theme++cmtapira/img/interlegis-footer.png" alt="Logotipo do Interlegis"/>
         </replace>
         <replace css:content-children=".colophon-logo.creative-commons">
-            <img src="++theme++Interlegis/img/cc-by-sa-footer.png" alt="Selo Creative Commons BY-SA"/>
+            <img src="++theme++cmtapira/img/cc-by-sa-footer.png" alt="Selo Creative Commons BY-SA"/>
         </replace>
         <after theme-children="/html/body" css:content-children="#plone-analytics" />
         <after css:theme-children="body">
