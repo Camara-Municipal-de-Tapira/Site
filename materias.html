@@ -1,25 +1,17 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="style.css">
-</head>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt" lang="pt"
+      metal:use-macro="here/main_template/macros/master">
 <body>
+    
     <metal:main fill-slot="main">
-        <!--<link rel="stylesheet" type="text/css" tal:attributes="href string:${portal_url}/++theme++Interlegis/css/style.css">
-        <script type="text/javascript" tal:attributes="src string:${portal_url}/++theme++Azul/javascript/buscarmaterias.js"></script>-->
-
-        <script type="module" src="utils.js"></script>
-        <script type="module" src="pesquisarmaterias.js"></script>
+        
+        <script type="module" tal:attributes="src string:${portal_url}/++theme++cmtapira/javascript/pesquisarmaterias.js"></script>        
 
         <h1 class="documentFirstHeading">Pesquisar matéria legislativa</h1>
         <h3 class="documentSecondHeading" style="color: red;">Os campos marcados com * são obrigatórios</h3>
-        <p class="descricao">Selecione o tipo de matéria e o ano que ela foi aprovada.</br>
-        Também é possível pesquisar por palavras-chave nas matérias no campo expressões, como saúde, educação etc.</br>
-        Para fazer nova pesquisa, clique em limpar, preencha novamente os campos e clique em pesquisar.</br>
-        Se nenhum autor for especificado, a pesquisa retornará todas as matérias que foram feitas daquele tipo no ano especificado.</br>
+        <p class="descricao">Selecione o tipo de matéria e o ano que ela foi aprovada.
+        Também é possível pesquisar por palavras-chave nas matérias no campo expressões, como saúde, educação etc.
+        Para fazer nova pesquisa, clique em limpar, preencha novamente os campos e clique em pesquisar.
+        Se nenhum autor for especificado, a pesquisa retornará todas as matérias que foram feitas daquele tipo no ano especificado.
         </p>
 
         <div class="pesquisa-materias" style="margin-bottom: 20px;">
@@ -40,12 +32,12 @@
 
             <div class="grupo-campo">
             <label for="expressoes-materia"><strong>Pesquisa de texto</strong></label>
-            <input type="text" id="pesquisar-expressoes" class="pesquisar-expressoes" placeholder="Pesquise pelo texto da matéria"></input>
+            <input type="text" id="pesquisar-expressoes" class="pesquisar-expressoes" placeholder="Pesquise pelo texto da matéria">
             </div>
 
             <div class="grupo-campo">
             <label for="numero-materia"><strong>Número</strong></label>
-            <input type="number" step="1" value="" id="numero-materia" class="selecao-numero" placeholder="Número"></input>
+            <input type="number" step="1" value="" id="numero-materia" class="selecao-numero" placeholder="Número">
             </div>
 
             <div class="grupo-campo">

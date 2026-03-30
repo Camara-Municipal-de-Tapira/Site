@@ -1,20 +1,13 @@
-<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt" lang="pt"
-metal:use-macro="here/main_template/macros/master">
-<head>
-    <link rel="stylesheet" href="style.css">
-</head>
+      metal:use-macro="here/main_template/macros/master">
 <body>
-
+    
     <metal:main fill-slot="main">
 
-        <!--<link rel="stylesheet" type="text/css" tal:attributes="href string:${portal_url}/++theme++Azul/css/style.css" />
-        <script type="text/javascript" tal:attributes="src string:${portal_url}/++theme++Azul/javascript/buscaratas.js"></script>-->
+        <script type="module" tal:attributes="src string:${portal_url}/++theme++cmtapira/javascript/buscaratas.js"></script> 
         
-        <script type="module" src="utils.js"></script>
-        <script type="module" src="buscaratas.js"></script>
-
         <h1 class="documentFirstHeading">Atas das Reuniões</h1>
+        <p class="descricao">Contém as atas das reuniões desde 2023.Basta usar o campo abaixo para pesquisar e baixar as atas.</p>
 
         <div class="pesquisa-atas" style="margin-bottom: 20px;">
             <label for="ano-ata"><strong>Ano:</strong></label>
