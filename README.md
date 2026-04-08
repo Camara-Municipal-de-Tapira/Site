@@ -27,21 +27,5 @@ Modelo de HTML de um page template:
 </html>
 ```
 
-Adicione ao index.html:
-
-```html
-<script src="utils.js" type="text/javascript"></script>
-```
-
-E ao rules.xml:
-
-```xml
-<after css:theme-children="body">
-    <script src="${portal_url}++theme++NOMEDOTEMA/javascript/utils.js" type="text/javascript"></script>
-</after>
-```
-
-Isso faz com que o script seja carregado e possa ser referenciado em outros através de import.
-
 # O que muda:
-Página de pesquisa de atas, página de pesquisa de matérias legislativas, página de pesquisa de pauta de reuniões.
+Página de pesquisa de atas, página de pesquisa de matérias legislativas, página de pesquisa de pauta de reuniões, respostas de indicações.
