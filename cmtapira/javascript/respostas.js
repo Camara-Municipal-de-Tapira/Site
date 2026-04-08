@@ -115,11 +115,11 @@ function renderizarResultados(data) {
         : "Autor não informado";
 
         const baixarMateria = sessao.materia.texto_original
-        ? `<a href="${sessao.materia.texto_original}" target="_blank" class="btn-download">Baixar matéria</a>`
+        ? `<a href="${sessao.materia.texto_original}" target="_blank" class="btn-baixar">Baixar matéria</a>`
         : "<em>Texto original indisponível</em>";
 
         const cardHTML = `
-        <div class="card">
+        <div class="caixa-sessao">
         <h3>${sessao.materia.__str__ || sessao.__str__}</h3>
         <p><strong>Autor:</strong> ${nomesAutores}</p>
         <p><strong>Data:</strong> ${sessao.materia.data_apresentacao}</p>
