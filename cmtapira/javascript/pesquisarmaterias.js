@@ -57,25 +57,33 @@ document.addEventListener('DOMContentLoaded', () =>{
 async function carregarTiposMateria(){
 
     const selectTipo = document.getElementById('tipo-materia');
-    const urlTiposSapl = 'https://sapl.tapira.mg.leg.br/api/materia/tipomaterialegislativa';
+    let urlTiposSapl = 'https://sapl.tapira.mg.leg.br/api/materia/tipomaterialegislativa';
+    let todosTipos = [];
 
-    try{
-        const resposta = await fetch(urlTiposSapl);
-        if(!resposta.ok){
-            throw new Error(`Erro ao carregar tipos de matéria: ${resposta.status}`);
+    try {
+    
+        let contador = 0;
+        
+        while (urlTiposSapl && contador <2){
+        
+            const resposta = await fetch(forceHttps(urlTiposSapl));
+            if(!resposta.ok){
+                throw new Error(`Erro ao carregar tipos de matéria: ${resposta.status}`);
+            }
+    
+            const dados = await resposta.json();
+            const listaTipos = dados.results || [];
+            
+            todosTipos = todosTipos.concat(listaTipos);
+            urlTiposSapl = dados.pagination && dados.pagination.links ? dados.pagination.links.next : null;
+            contador++;
+            
         }
 
-        const dados = await resposta.json();
-
-        const listaTipos = dados.results || dados;
-
-        listaTipos.forEach(tipo => {
+        todosTipos.forEach(tipo => {
             const opcaoHTML = document.createElement('option');
-
             opcaoHTML.value = tipo.id;
-
             opcaoHTML.textContent = tipo.descricao || tipo.nome;
-
             selectTipo.appendChild(opcaoHTML);
         });
 
