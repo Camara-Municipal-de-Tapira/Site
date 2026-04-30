@@ -163,6 +163,7 @@ async function pesquisaMateria(anoPesquisado, paginaAtual) {
         // APIs do SAPL geralmente retornam os dados paginados dentro de um array chamado "results"
         const materias = dados.results || dados;
 
+        // loop para incluir o nome dos autores em cada card
         for (const indicacao of materias){
             const idAutor = indicacao.autores[0];
             if (idAutor){
@@ -172,10 +173,17 @@ async function pesquisaMateria(anoPesquisado, paginaAtual) {
             }
         }
         
+        // loop para incluir o status de tramitação de cada card
+        // todo melhorar esse código
         for (const tramita of materias){
             const idMateria = tramita.id;
+
             if(idMateria){
                 const dadosRecentes = await tramitacao(idMateria);
+                const doc = await documentos(idMateria);
+
+                // Armazena TODOS os documentos acessórios (sempre, independente da tramitação)
+                tramita.documentos_accessorios = doc ? doc : [];
                 
                 if(dadosRecentes) {
                     const textoStatus = dadosRecentes.__str__ || "";
@@ -184,18 +192,14 @@ async function pesquisaMateria(anoPesquisado, paginaAtual) {
                     if(partes.length >=3){
                         const statusTexto = partes[1].trim();
                         const dataTramitacao = partes[2].trim();
-                        
+                                
                         tramita.status = `${statusTexto} - ${dataTramitacao}`;
                     } else {
                         tramita.status = dadosRecentes.__str__;
                     }
                     tramita.texto_completo = dadosRecentes.texto || "Sem texto informativo";
                     tramita.data_atualização = dadosRecentes.data_tramitacao;
-                    /*
-                    tramita.status = dadosRecentes.__str__;
-                    tramita.texto_completo = dadosRecentes.texto;
-                    tramita.data_atualizacao = dadosRecentes.data_tramitacao;
-                    */
+                    
                 } else {
                     tramita.status = "Sem tramitação";
                 }
@@ -204,7 +208,7 @@ async function pesquisaMateria(anoPesquisado, paginaAtual) {
             } 
             
         }
-
+              
         // 5. Enviar os dados para a função que vai desenhar os cards na tela
         renderizarResultados(dados);
 
@@ -237,6 +241,29 @@ async function tramitacao(idMateria) {
     }
 }
 
+// função para capturar os dados dos documentos acessórios anexos ao projeto
+async function documentos(idMateria) {
+    const baseURL = `https://sapl.tapira.mg.leg.br/api/materia/documentoacessorio/`;
+    const urlDocumentos = `${baseURL}?materia=${idMateria}`;
+    
+    if (!idMateria) return null;
+
+    try {
+        const response = await fetch(forceHttps(urlDocumentos));
+        const data = await response.json();
+        const lista = data.results || data;
+
+        if (Array.isArray(lista) && lista.length > 0) {
+            // Retorna TODOS os documentos (não apenas o primeiro)
+            return lista;
+        }
+        return null;
+    } catch (erro) {
+        console.error("Erro ao buscar documentos acessórios:", erro);
+        return null;
+    }
+}
+
 // Função para desenhar o HTML
 function renderizarResultados(dados) {
 
@@ -245,7 +272,7 @@ function renderizarResultados(dados) {
     const infoPagina = document.getElementById('info-pagina');
     const divPaginacao = document.getElementById('controles-paginacao');
     const containerResultados = document.getElementById('lista-sessoes');
-
+    const baseURL = 'https://sapl.tapira.mg.leg.br';
     containerResultados.innerHTML = ''; // Limpa os resultados da busca anterior
 
     const listaMaterias = dados.results || [];
@@ -269,15 +296,45 @@ function renderizarResultados(dados) {
             : `<span style="color:#777; font-size:0.9em; display:inline-block;
             margin-top:10px;">(Matéria não disponível)</span>`;
 
+            // Monta os links para TODOS os documentos acessórios
+            let documentosHTML = '';
+            const docs = materia.documentos_accessorios || [];
+            
+            if (docs.length > 0) {
+                docs.forEach((doc, index) => {
+                    // Verifica se o arquivo é uma URL HTTP válida
+                    const urlArquivo = doc.arquivo;
+                    const isUrlValida = urlArquivo && urlArquivo.startsWith('http');
+                    
+                    if (isUrlValida) {
+                        const nomeDoc = urlArquivo.split('/').pop();
+                        documentosHTML += `
+                            <a href="${urlArquivo}" target="_blank" class="btn-anexos" title="Documentos anexados" style="margin-right:10px;">
+                                📎 Baixar Anexo ${index + 1}
+                            </a>`;
+                    }
+                });
+                
+                if (!documentosHTML) {
+                    documentosHTML = `<span class="btn-indisponivel" style="color:#777; font-size:0.9em; display:inline-block;
+                margin-top:10px;">(Documento acessório não disponível)</span>`;
+                }
+            } else {
+                documentosHTML = `<span style="color:#777; font-size:0.9em; display:inline-block;
+            margin-top:10px;">(Documento acessório não disponível)</span>`;
+            }
+           
             const cardHTML = `
             <div class="caixa-sessao">
-            <h3>${materia.__str__ || 'Matéria sem título'}</h3>
+            <h3>${materia.__str__ || 'Matéria sem título'}</a></h3>
             <p><strong>Ementa:</strong> ${materia.ementa || 'Sem ementa disponível'}</p>
             <p><strong>Data de Apresentação:</strong> ${dataFormatada} </p>
             <p><strong>Autor:</strong> ${materia.nomeAutorReal}</p>
-            <p><strong>Status de tramitação: ${materia.status}</strong></p>
-            <p><strong>Texto da ação: ${materia.texto_completo}</strong></p>
+            <p><strong>Status de tramitação:</strong> ${materia.status}</p>
+            <p><strong>Texto da ação:</strong> ${materia.texto_completo}</p>            
             ${baixarMateria}
+            ${documentosHTML}            
+            <a href="${baseURL}${materia.link_detail_backend}" target="_blank" class="btn-detalhes" title="Abre outra janela onde são mostradas as informações sobre a matéria.">👁️‍🗨️ Visualizar detalhes</a>
             </div>
             `;
             // Adiciona o card na tela
