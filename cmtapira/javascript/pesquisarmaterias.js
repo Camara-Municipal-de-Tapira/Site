@@ -331,10 +331,10 @@ function renderizarResultados(dados) {
             <p><strong>Data de Apresentação:</strong> ${dataFormatada} </p>
             <p><strong>Autor:</strong> ${materia.nomeAutorReal}</p>
             <p><strong>Status de tramitação:</strong> ${materia.status}</p>
-            <p><strong>Texto da ação:</strong> ${materia.texto_completo}</p>
-            <a href="${baseURL}${materia.link_detail_backend}" target="_blank" class="btn-baixar" title="👁️‍🗨️ Visualizar detalhes da matéria. Abre outra janela onde são mostradas as informações sobre a matéria.">
+            <p><strong>Texto da ação:</strong> ${materia.texto_completo}</p>            
             ${baixarMateria}
-            ${documentosHTML}
+            ${documentosHTML}            
+            <a href="${baseURL}${materia.link_detail_backend}" target="_blank" class="btn-detalhes" title="Abre outra janela onde são mostradas as informações sobre a matéria.">👁️‍🗨️ Visualizar detalhes</a>
             </div>
             `;
             // Adiciona o card na tela
