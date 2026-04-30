@@ -666,8 +666,7 @@ footer p {
     color: #333;
 }
 
-
-.btn-ata, .btn-baixar {
+.btn-ata, .btn-baixar, .btn-detalhes {
     display: inline-block;
     margin-top: 10px;
     padding: 8px 15px;
@@ -688,7 +687,13 @@ footer p {
     color: white;
 }
 
-a.btn-ata, a.btn-baixar {
+.btn-detalhes:hover {
+    background-color: #61baed;
+    color: white;
+}
+
+
+a.btn-ata, a.btn-baixar, a.btn-detalhes {
     color: white !important;
 }
 
