@@ -320,7 +320,7 @@ function renderizarResultados(dados) {
                 margin-top:10px;">(Documento acessório não disponível)</span>`;
                 }
             } else {
-                documentosHTML = `<span style="color:#777; font-size:0.9em; display:inline-block;
+                documentosHTML = `<span class="btn-indisponivel" style="color:#777; font-size:0.9em; display:inline-block;
             margin-top:10px;">(Documento acessório não disponível)</span>`;
             }
            
@@ -332,9 +332,11 @@ function renderizarResultados(dados) {
             <p><strong>Autor:</strong> ${materia.nomeAutorReal}</p>
             <p><strong>Status de tramitação:</strong> ${materia.status}</p>
             <p><strong>Texto da ação:</strong> ${materia.texto_completo}</p>            
+            <div class="botoes-acao">
             ${baixarMateria}
             ${documentosHTML}            
             <a href="${baseURL}${materia.link_detail_backend}" target="_blank" class="btn-detalhes" title="Abre outra janela onde são mostradas as informações sobre a matéria.">👁️‍🗨️ Visualizar detalhes</a>
+            </div>
             </div>
             `;
             // Adiciona o card na tela
