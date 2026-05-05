@@ -104,7 +104,7 @@ async function carregarTiposMateria(){
     }
 }
 
-async function pesquisaMateria(anoPesquisado, paginaAtual) {
+export async function pesquisaMateria(anoPesquisado, paginaAtual) {
 
     // 1. Capturar os valores digitados/selecionados pelo usuário
     const tipo = document.getElementById('tipo-materia').value.trim();
@@ -219,7 +219,7 @@ async function pesquisaMateria(anoPesquisado, paginaAtual) {
 }
 
 // Função para capturar os dados de tramitação das matérias pesquisadas.
-async function tramitacao(idMateria) {
+export async function tramitacao(idMateria) {
     const baseURL = `https://sapl.tapira.mg.leg.br/api/materia/tramitacao/`;
     const urlStatus = `${baseURL}?materia=${idMateria}`;
     
@@ -242,7 +242,7 @@ async function tramitacao(idMateria) {
 }
 
 // função para capturar os dados dos documentos acessórios anexos ao projeto
-async function documentos(idMateria) {
+export async function documentos(idMateria) {
     const baseURL = `https://sapl.tapira.mg.leg.br/api/materia/documentoacessorio/`;
     const urlDocumentos = `${baseURL}?materia=${idMateria}`;
     
