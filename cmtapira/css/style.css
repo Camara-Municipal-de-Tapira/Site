@@ -956,3 +956,8 @@ body.section-front-page .documentDescription {
     background: #fff !important; 
     overflow: visible !important;
 }
+
+#main-navigation li a:hover {
+    color: #69B1FF;
+    transition: color 0.3s ease;
+}
