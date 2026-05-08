@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt" lang="pt"
+      metal:use-macro="here/main_template/macros/master">
+<head>
+</head>
+<body>
+    <metal:main fill-slot="main">
+        
+        <script type="module" tal:attributes="src string:${portal_url}/++theme++cmtapira/javascript/pesquisarlicitacoes.js"></script>        
+
+        <h1 class="documentFirstHeading">Pesquisar Licitações e Contratos</h1>
+
+        <div id="painel-buscas" style="background: #f9f9f9; padding: 20px; border: 1px solid #ddd; margin-bottom: 20px; border-radius: 5px;">
+            <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px;">
+                <div style="flex: 1; min-width: 250px;">
+                    <label for="input-texto" style="font-weight: bold;">Palavra-chave (Fornecedor, Contrato ou Objeto):</label><br>
+                    <input type="text" id="input-texto" placeholder="Digite para filtrar..." style="width: 100%; padding: 8px;">
+                </div>
+                <div style="flex: 1; min-width: 150px;">
+                    <label for="data-inicio" style="font-weight: bold;">Data Início (DD/MM/AAAA):</label><br>
+                    <input type="text" id="data-inicio" placeholder="DD/MM/AAAA" maxlength="10" style="width: 100%; padding: 8px;">
+                </div>
+                <div style="flex: 1; min-width: 150px;">
+                    <label for="data-fim" style="font-weight: bold;">Data Fim (DD/MM/AAAA):</label><br>
+                    <input type="text" id="data-fim" placeholder="DD/MM/AAAA" maxlength="10" style="width: 100%; padding: 8px;">
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <button type="button" id="btn-pesquisar" style="padding: 8px 15px; cursor: pointer; background: #0055a4; color: white; border: none; border-radius: 3px;">Pesquisar na API</button>
+                <button type="button" id="btn-limpar" style="padding: 8px 15px; cursor: pointer; background: #666; color: white; border: none; border-radius: 3px;">Limpar Campos</button>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 15px;">
+            <div id="resumo-situacao" style="font-size: 14px; padding: 10px; background: #eef; border-radius: 4px; border: 1px solid #ccd;">
+                <strong>Resumo da Página:</strong> 
+                <span style="color: green; margin-left: 10px;">Vigentes: <b id="qtd-vigentes">0</b></span> | 
+                <span style="color: red; margin-left: 10px;">Não Vigentes: <b id="qtd-nao-vigentes">0</b></span>
+            </div>
+            <div id="controles-exportacao" style="display: none; gap: 10px;">
+                <span style="font-weight: bold;">Exportar:</span>
+                <button type="button" id="btn-export-json" style="cursor:pointer;">JSON</button>
+                <button type="button" id="btn-export-csv" style="cursor:pointer;">CSV</button>
+                <button type="button" id="btn-export-html" style="cursor:pointer;">HTML</button>
+            </div>
+        </div>
+
+        <table id="tabela-licitacoes" class="listing" style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+            <thead>
+                <tr>
+                    <th>Contrato</th>
+                    <th>Processo</th>
+                    <th>Data Assinatura</th>
+                    <th>Vencimento</th>
+                    <th>Valor Contratado</th>
+                    <th>Fornecedor</th>
+                    <th>Objeto</th>
+                    <th>Situação</th>
+                </tr>
+            </thead>
+            <tbody id="lista-sessoes">
+                <tr>
+                    <td colspan="8" style="text-align: center; padding: 20px;">Preencha as datas e clique em "Pesquisar na API" para buscar os dados.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div id="controles-paginacao" style="display: none; align-items: center; justify-content: center; gap: 15px; margin-top: 20px; margin-bottom: 30px;">
+            <button type="button" id="btn-anterior" class="botao-pesquisar-atas" disabled="disabled" style="padding: 5px 15px; cursor: pointer;">« Anterior</button>
+            <span id="info-pagina" style="font-weight: bold; color: #555;">Página 1</span>
+            <button type="button" id="btn-proximo" class="botao-pesquisar-atas" disabled="disabled" style="padding: 5px 15px; cursor: pointer;">Próxima »</button>
+        </div>
+
+    </metal:main>
+</body>
+</html>
