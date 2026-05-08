@@ -292,7 +292,7 @@ function renderizarResultados(dados) {
             const dataFormatada = formatarDataBR(materia.data_apresentacao);
 
             const baixarMateria = materia.texto_original
-            ? `<a href="${materia.texto_original}" target="_blank" class="btn-baixar">Baixar Matéria (PDF)</a>`
+            ? `<a title="Baixe a matéria em PDF" href="${materia.texto_original}" target="_blank" class="btn-baixar">Baixar Matéria (PDF)</a>`
             : `<span style="color:#777; font-size:0.9em; display:inline-block;
             margin-top:10px;">(Matéria não disponível)</span>`;
 
@@ -309,29 +309,29 @@ function renderizarResultados(dados) {
                     if (isUrlValida) {
                         const nomeDoc = urlArquivo.split('/').pop();
                         documentosHTML += `
-                            <a href="${urlArquivo}" target="_blank" class="btn-anexos" title="Documentos anexados" style="margin-right:10px;">
+                            <a title="Documentos anexados à matéria." href="${urlArquivo}" target="_blank" class="btn-anexos" title="Documentos anexados" style="margin-right:10px;">
                                 📎 Baixar Anexo ${index + 1}
                             </a>`;
                     }
                 });
                 
                 if (!documentosHTML) {
-                    documentosHTML = `<span class="btn-indisponivel" style="color:#777; font-size:0.9em; display:inline-block;
+                    documentosHTML = `<span class="btn-indisponivel" title="Não foi anexado nenhum documento a essa matéria" style="color:#777; font-size:0.9em; display:inline-block;
                 margin-top:10px;">(Documento acessório não disponível)</span>`;
                 }
             } else {
-                documentosHTML = `<span class="btn-indisponivel" style="color:#777; font-size:0.9em; display:inline-block;
+                documentosHTML = `<span class="btn-indisponivel" title="Não foi anexado nenhum documento a essa matéria" style="color:#777; font-size:0.9em; display:inline-block;
             margin-top:10px;">(Documento acessório não disponível)</span>`;
             }
            
             const cardHTML = `
             <div class="caixa-sessao">
             <h3>${materia.__str__ || 'Matéria sem título'}</a></h3>
-            <p><strong>Ementa:</strong> ${materia.ementa || 'Sem ementa disponível'}</p>
-            <p><strong>Data de Apresentação:</strong> ${dataFormatada} </p>
-            <p><strong>Autor:</strong> ${materia.nomeAutorReal}</p>
-            <p><strong>Status de tramitação:</strong> ${materia.status}</p>
-            <p><strong>Texto da ação:</strong> ${materia.texto_completo}</p>            
+            <p title="Qual o assunto da matéria"><strong>Ementa:</strong> ${materia.ementa || 'Sem ementa disponível'}</p>
+            <p title="Quando a matéria foi apresentada em plenário"><strong>Data de Apresentação:</strong> ${dataFormatada} </p>
+            <p title="Quem é o vereador que a criou"><strong>Autor:</strong> ${materia.nomeAutorReal}</p>
+            <p title="Qual o estado atual da matéria? A tramitação começa no plenário, mas estende-se até a Prefeitura, quando ela é analisada, assinada pelo(a) Prefeito(a) e transformada em lei, ou respondida, no caso das indicações"><strong>Status de tramitação:</strong> ${materia.status}</p>
+            <p title="Texto que indica o que aconteceu com a matéria, ou no caso das indicações, a resposta da Prefeitura"><strong>Texto da ação:</strong> ${materia.texto_completo}</p>            
             <div class="botoes-acao">
             ${baixarMateria}
             ${documentosHTML}            
