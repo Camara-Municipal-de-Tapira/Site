@@ -47,6 +47,10 @@ async function montarHtmlMaterias(listaItens, classeCssAdicional) {
 
 async function mostrarTodasSessoes() {
     const containerSessoes = document.getElementById('lista-sessoes');
+    const detalhesReuniao = document.getElementById('detalhes-reuniao');
+
+    detalhesReuniao.style.display = 'none';
+    containerSessoes.style.display = 'block';
     containerSessoes.innerHTML = "<p><em>Buscando sessões...</em></p>";
 
     // esta função deve receber os dados da função buscarReuniao e mostrar todas as sessões encontradas, 
@@ -166,7 +170,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('select-mes').value = '';
         document.getElementById('select-dia').value = '';
         document.getElementById('select-tipo').value = '';
-        document.getElementById('lista-sessoes').innerHTML = '';
+        const listaSessoes = document.getElementById('lista-sessoes');
+        listaSessoes.innerHTML = '';
+        listaSessoes.style.display = 'block';
         document.getElementById('detalhes-reuniao').style.display = 'none';
+        document.getElementById('titulo-sessao').innerText = 'Pesquise as pautas de reunião';
     });
 });
