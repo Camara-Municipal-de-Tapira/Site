@@ -4,15 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pauta de Reunião</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
     <script type="module" src="ultimasessao.js"></script>
 
     <h1 id="titulo-pagina">Pauta da reunião</h1>
-        <h1 class="documentFirstHeading" id="titulo-sessao">Pesquise as pautas de reunião</h1>
+        
+        <p>Pesquise pautas de reuniões ordinárias, extraordinárias e solenes.<br>
+        É possível filtrar por ano, mês, dia e tipo de reunião.<br>
+        Também é possível imprimir a pauta da reunião em PDF, clicando no botão "Impressão da pauta em PDF" que aparecerá nos detalhes de cada sessão encontrada.
+        <h2 class="documentFirstHeading" id="titulo-sessao"></h2>
+    </p>
 
-        <select id="select-ano" style="margin-bottom: 20px; padding: 5px; font-size: 1em;">
+        <select id="select-ano" title="Selecione o ano" style="margin-bottom: 20px; padding: 5px; font-size: 1em;">
             <option value="">Selecione o ano</option>
             <option value="2026">2026</option>
             <option value="2025">2025</option>
@@ -20,7 +25,7 @@
             <option value="2023">2023</option>            
         </select>
 
-        <select id="select-mes" style="margin-bottom: 20px; padding: 5px; font-size: 1em; margin-left: 10px;">
+        <select id="select-mes" title="Selecione o mês" style="margin-bottom: 20px; padding: 5px; font-size: 1em; margin-left: 10px;">
             <option value="">Selecione o mês</option>
             <option value="01">Janeiro</option>
             <option value="02">Fevereiro</option>
@@ -36,7 +41,7 @@
             <option value="12">Dezembro</option>
         </select>
 
-        <select id="select-dia" style="margin-bottom: 20px; padding: 5px; font-size: 1em; margin-left: 10px;">
+        <select id="select-dia" title="Selecione o dia" style="margin-bottom: 20px; padding: 5px; font-size: 1em; margin-left: 10px;">
             <option value="">Selecione o dia</option>
             <option value="01">01</option>
             <option value="02">02</option>
@@ -71,16 +76,19 @@
             <option value="31">31</option>
         </select>
 
-        <select id="select-tipo" style="margin-bottom: 20px; padding: 5px; font-size: 1em; margin-left: 10px;">
+        <select id="select-tipo" title="Selecione o tipo de reunião" style="margin-bottom: 20px; padding: 5px; font-size: 1em; margin-left: 10px;">
             <option value="">Selecione o tipo de reunião</option>
             <option value="1">Reunião Ordinária</option>
             <option value="2">Reunião Extraordinária</option>
             <option value="3">Reunião Solene</option>
         </select>
+        
+        <div class="acoes-pesquisa">
+            <button id="btn-pesquisar" title="Pesquisa as pautas de reunião de acordo com os filtros selecionados" class="botao-pesquisar">Pesquisar</button>
+            <button id="btn-limpar" title="Limpa todos os filtros e mostra todas as sessões" class="botao-limpar">Limpar</button>      
 
-        <p><button id="btn-pesquisar" style="padding: 10px 20px; font-size: 1em; background-color: #007bff; color: white; border: none; cursor: pointer;">Pesquisar</button></p>
-
-        <p><button id="btn-limpar" style="padding: 10px 20px; font-size: 1em; background-color: #6c757d; color: white; border: none; cursor: pointer;">Limpar</button></p>
+        </div>
+        
 
         <div id="lista-sessoes"></div>
 
