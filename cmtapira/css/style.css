@@ -658,7 +658,7 @@ footer p {
 }
 
 .caixa-sessao:hover{
-    transform: scale(1.06);
+    transform: scale(1.04);
 }
 
 .caixa-sessao h3 {
@@ -841,7 +841,7 @@ body.section-front-page .documentDescription {
 
 .acoes-pesquisa {
     grid-column:  1 / -1;
-    display: flex;
+    display: block;
     justify-content: space-between;
     align-items: center;
     margin-top: 20px;

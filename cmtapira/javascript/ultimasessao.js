@@ -68,7 +68,7 @@ async function mostrarTodasSessoes() {
         for (let i = 0; i < sessoes.length; i++) {
             const sessao = sessoes[i];
             html += `
-            <div class="card-sessao">
+            <div class="caixa-sessao">
                 <h3>${escaparHTML(sessao.__str__ || 'Sessão')}</h3>
                 <p>Data: ${formatarDataBR(sessao.data_inicio)}</p>
                 <button class="btn-ata btn-ver-detalhes" data-index="${i}"><strong>Ver detalhes</strong></button>
@@ -109,7 +109,7 @@ async function mostraDetalhesReuniao(sessoes) {
     containerExpediente.innerHTML = "<p><em>Buscando autores e ementas do Expediente...</em></p>";
     containerOrdemDia.innerHTML = "<p><em>Buscando autores e ementas da Ordem do Dia...</em></p>";
         
-    baixarSessao.innerHTML = `<a href="${baseUrl}/sessao/pauta-sessao/${sessoes.id}/pdf" target="blank" class="btn-ata"><strong>Impressão da pauta em PDF</strong></a>`;
+    baixarSessao.innerHTML = `<a href="https://sapl.tapira.mg.leg.br/sessao/pauta-sessao/${sessoes.id}/pdf" class="btn-ata"><strong>Impressão da pauta em PDF</strong></a>`;
         
     // Busca o Expediente
     const resExpediente = await fetch(`${baseUrl}/sessao/expedientemateria/?sessao_plenaria=${sessoes.id}`);
@@ -146,6 +146,7 @@ async function buscarReuniao() {
         const jsonSessao = await resSessao.json();
 
         if (!jsonSessao.results || jsonSessao.results.length === 0) {
+            alert("Nenhuma sessão encontrada para os parâmetros selecionados. Tente ajustar os filtros ou limpar para mostrar todas as sessões.");
             dataSessao.innerText = "Nenhuma sessão encontrada.";
             return;
         }
