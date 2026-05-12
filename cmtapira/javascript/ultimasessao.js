@@ -51,6 +51,7 @@ async function buscarUltimaReuniaoCompleta() {
     const tituloSessao = document.getElementById('titulo-sessao');
     const dataSessao = document.getElementById('data-sessao');
     const baixarSessao = document.getElementById('impressao-pauta');
+    const pesquisarAtas = document.getElementById('pesquisar-atas');
 
     try {
         // Busca a Última Sessão
@@ -70,7 +71,8 @@ async function buscarUltimaReuniaoCompleta() {
         containerOrdemDia.innerHTML = "<p><em>Buscando autores e ementas da Ordem do Dia...</em></p>";
         
         baixarSessao.innerHTML = `<a href="https://sapl.tapira.mg.leg.br/sessao/pauta-sessao/${ultimaSessao.id}/pdf" target="blank">Impressão em PDF da pauta</a>`;
-
+        pesquisarAtas.innerHTML = `<a href="/portal/atas">Pesquisar atas de reuniões</a>`;
+        
         // Busca o Expediente
         const resExpediente = await fetch(`${baseUrl}/sessao/expedientemateria/?sessao_plenaria=${ultimaSessao.id}`);
         const jsonExpediente = await resExpediente.json();
