@@ -3,3 +3,4 @@ jest.config.js
 package.json
 pesquisarmaterias.test.js
 utils.test.js
+.babelrc
