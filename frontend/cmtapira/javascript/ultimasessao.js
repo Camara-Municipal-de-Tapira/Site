@@ -1,40 +1,45 @@
-import { formatarDataBR, escaparHTML } from './utils.js';
+import { formatarDataBR, pegarNomeDoAutor, escaparHTML } from './utils.js';
 
-// Constante da URL base da API do backend
-const baseUrlBackend = "/api";
+const baseUrl = "https://sapl.tapira.mg.leg.br/api";
 
-/**
- * Função que monta os Cards de matérias com dados já formatados do backend Java
- * @param {Array} listaItens - Array de MateriaDTO com título, autor, ementa, textoOriginal, resultado
- * @param {String} classeCssAdicional - Classe CSS adicional para o card
- * @returns {String} HTML dos cards das matérias
- */
+// Função que monta os Cards (agora com o Autor)
 async function montarHtmlMaterias(listaItens, classeCssAdicional) {
     if (!listaItens || listaItens.length === 0) {
         return "<p>Nenhuma matéria cadastrada nesta fase.</p>";
     }
 
     let html = "";
-    for (const materia of listaItens) {
-        try {
-            // Os dados já vêm formatados do backend Java
-            const titulo = escaparHTML(materia.titulo || 'Matéria sem título');
-            const autor = escaparHTML(materia.autor || 'Sem autor');
-            const ementa = escaparHTML(materia.ementa || 'Sem ementa cadastrada.');
-            const textoOriginal = materia.textoOriginal ? escaparHTML(materia.textoOriginal) : '#';
-            const resultado = materia.resultado ? `<span class="resultado-votacao">Resultado: ${escaparHTML(materia.resultado)}</span>` : '';
+    for (const item of listaItens) {
+        if (item.materia) {
+            try {
+                // 1. Busca os detalhes do projeto (texto, ementa, lista de autores)
+                const resMateria = await fetch(`${baseUrl}/materia/materialegislativa/${item.materia}/`);
+                const materia = await resMateria.json();
 
-            html += `
+                // 2. Verifica se tem autor e busca o nome do primeiro
+                let nomeAutorReal = "Sem autor";
+                if (materia.autores && materia.autores.length > 0) {
+                    nomeAutorReal = await pegarNomeDoAutor(materia.autores[0]);
+
+                    // Se tiver mais de um autor, adiciona um "e outros" para ficar elegante
+                    if (materia.autores.length > 1) {
+                        nomeAutorReal += " e outros";
+                    }
+                }
+
+                // 3. Monta o Card final com o Autor incluído
+                html += `
                 <div class="card-materia ${classeCssAdicional}">
-                    <h3>${titulo}</h3>
-                    <p><strong>Autor:</strong> ${autor}</p>
-                    <p><strong>Assunto:</strong> ${ementa}</p>
-                    ${materia.textoOriginal ? `<p><a href="${textoOriginal}" target="_blank" class="btn-ata"><strong>Baixar matéria</strong></a></p>` : ''}
-                    ${resultado}
+                <h3>${escaparHTML(materia.__str__ || 'Matéria')}</h3>
+                <p><strong>Autor:</strong> ${escaparHTML(nomeAutorReal)}</p>
+                <p><strong>Assunto:</strong> ${escaparHTML(materia.ementa) || 'Sem ementa cadastrada.'}</p>
+                <p><a href="${escaparHTML(materia.texto_original)}" target="_blank" class="btn-ata"><strong>Baixar matéria</strong></a></p>
+                ${item.resultado_str ? `<span class="resultado-votacao">Resultado: ${item.resultado_str}</span>` : ''}
                 </div>
-            `;
-        } catch (e) {
-            console.error("Erro ao processar matéria:", e, materia);
+                `;
+            } catch (e) {
+                console.error("Erro ao buscar detalhes da matéria:", e);
+            }
         }
     }
     return html;
@@ -48,6 +53,10 @@ async function mostrarTodasSessoes() {
     containerSessoes.style.display = 'block';
     containerSessoes.innerHTML = "<p><em>Buscando sessões...</em></p>";
 
+    // esta função deve receber os dados da função buscarReuniao e mostrar todas as sessões encontradas, 
+    // com um botão para mostrar os detalhes de cada sessão
+    // o botão deve chamar a função mostraDetalhesReuniao passando os dados da sessão selecionada
+
     try {
         const sessoes = await buscarReuniao();
         if (!sessoes || sessoes.length === 0) {
@@ -56,25 +65,21 @@ async function mostrarTodasSessoes() {
         }
 
         let html = "";
-        for (const sessao of sessoes) {
+        for (let i = 0; i < sessoes.length; i++) {
+            const sessao = sessoes[i];
             html += `
             <div class="caixa-sessao">
-                <h3>${escaparHTML(sessao.tipo || 'Sessão')}</h3>
-                <p>Data: ${formatarDataBR(sessao.data)}</p>
-                <button class="btn-ata btn-ver-detalhes" data-sessao-id="${sessao.id}"><strong>Ver detalhes</strong></button>
+                <h3>${escaparHTML(sessao.__str__ || 'Sessão')}</h3>
+                <p>Data: ${formatarDataBR(sessao.data_inicio)}</p>
+                <button class="btn-ata btn-ver-detalhes" data-index="${i}"><strong>Ver detalhes</strong></button>
             </div>
             `;
         }
         containerSessoes.innerHTML = html;
-        
-        // Adicionar event listeners aos botões
         containerSessoes.querySelectorAll('.btn-ver-detalhes').forEach(button => {
-            button.addEventListener('click', async () => {
-                const sessaoId = Number(button.dataset.sessaoId);
-                const sessaoSelecionada = sessoes.find(s => s.id === sessaoId);
-                if (sessaoSelecionada) {
-                    await mostraDetalhesReuniao(sessaoSelecionada);
-                }
+            button.addEventListener('click', () => {
+                const index = Number(button.dataset.index);
+                mostraDetalhesReuniao(sessoes[index]);
             });
         });
     } catch (erro) {
@@ -83,10 +88,14 @@ async function mostrarTodasSessoes() {
     }
 }   
 
-async function mostraDetalhesReuniao(sessao) {
+async function mostraDetalhesReuniao(sessoes) {
+
     // Mostrar os detalhes da reunião e ocultar a lista
     document.getElementById('detalhes-reuniao').style.display = 'block';
     document.getElementById('lista-sessoes').style.display = 'none';
+
+    // TODO - Essa função deve mostrar somente o resultado da sessão selecionada
+    // outra função que mostra todas as reuniões deve ser feita
 
     const containerExpediente = document.getElementById('conteudo-expediente');
     const containerOrdemDia = document.getElementById('conteudo-ordem-dia');
@@ -94,89 +103,74 @@ async function mostraDetalhesReuniao(sessao) {
     const dataSessao = document.getElementById('data-sessao');
     const baixarSessao = document.getElementById('impressao-pauta');
 
-    // Exibir mensagem de carregamento
-    containerExpediente.innerHTML = "<p><em>Carregando detalhes da reunião...</em></p>";
-    containerOrdemDia.innerHTML = "<p><em>Carregando detalhes da reunião...</em></p>";
+    tituloSessao.innerText = `${sessoes.__str__ || ''}`;
+    dataSessao.innerText = `Realizada em: ${formatarDataBR(sessoes.data_inicio)}`;
 
-    try {
-        // Buscar dados completos da reunião do backend Java
-        const response = await fetch(`${baseUrlBackend}/reunioes/${sessao.id}`);
+    containerExpediente.innerHTML = "<p><em>Buscando autores e ementas do Expediente...</em></p>";
+    containerOrdemDia.innerHTML = "<p><em>Buscando autores e ementas da Ordem do Dia...</em></p>";
         
-        if (!response.ok) {
-            throw new Error("Erro ao buscar detalhes da reunião");
-        }
-
-        const sessaoDetalhes = await response.json();
-
-        // Atualizar informações gerais da sessão
-        tituloSessao.innerText = `${sessaoDetalhes.tipo || ''}`;
-        dataSessao.innerText = `Realizada em: ${formatarDataBR(sessaoDetalhes.data)}`;
+    baixarSessao.innerHTML = `<a href="https://sapl.tapira.mg.leg.br/sessao/pauta-sessao/${sessoes.id}/pdf" class="btn-ata"><strong>Impressão da pauta em PDF</strong></a>`;
         
-        // Adicionar link para download da pauta em PDF
-        baixarSessao.innerHTML = `<a href="https://sapl.tapira.mg.leg.br/sessao/pauta-sessao/${sessaoDetalhes.id}/pdf" class="btn-ata"><strong>Impressão da pauta em PDF</strong></a>`;
+    // Busca o Expediente
+    const resExpediente = await fetch(`${baseUrl}/sessao/expedientemateria/?sessao_plenaria=${sessoes.id}`);
+    const jsonExpediente = await resExpediente.json();
+    containerExpediente.innerHTML = await montarHtmlMaterias(jsonExpediente.results, "card-expediente");
 
-        // Montar HTML dos cards de expediente
-        const htmlExpediente = await montarHtmlMaterias(sessaoDetalhes.expediente, "card-expediente");
-        containerExpediente.innerHTML = htmlExpediente;
-
-        // Montar HTML dos cards da ordem do dia
-        const htmlOrdemDia = await montarHtmlMaterias(sessaoDetalhes.ordemDia, "");
-        containerOrdemDia.innerHTML = htmlOrdemDia;
-
-    } catch (erro) {
-        console.error("Erro ao carregar detalhes da reunião:", erro);
-        containerExpediente.innerHTML = "<p>Não foi possível carregar os detalhes da reunião no momento.</p>";
-        containerOrdemDia.innerHTML = "<p>Não foi possível carregar os detalhes da reunião no momento.</p>";
-    }
+    // Busca a Ordem do Dia
+    const resPauta = await fetch(`${baseUrl}/sessao/ordemdia/?sessao_plenaria=${sessoes.id}`);
+    const jsonPauta = await resPauta.json();
+    containerOrdemDia.innerHTML = await montarHtmlMaterias(jsonPauta.results, "");
 }
 
-/**
- * Busca reuniões do backend Java com filtros opcionais
- * @param {String} tipo - Tipo de sessão (opcional)
- * @param {String} ano - Ano da sessão (opcional)
- * @param {String} mes - Mês da sessão (opcional)
- * @param {String} dia - Dia da sessão (opcional)
- * @returns {Array} Array de SessaoDTO
- */
-async function buscarReuniao(tipo = '', ano = '', mes = '', dia = '') {
+// Função Principal
+async function buscarReuniao() {
     
-    // Construir query string com parâmetros opcionais
-    const params = new URLSearchParams();
-    if (tipo) params.append('tipo', tipo);
-    if (ano) params.append('ano', ano);
-    if (mes) params.append('mes', mes);
-    if (dia) params.append('dia', dia);
+    
+    const tipo = document.getElementById('select-tipo').value; // 1 - Ordinária, 2 - Extraordinária, 3 - Solene
+    const ano = document.getElementById('select-ano').value; // Ex: 2024
+    const mes = document.getElementById('select-mes').value; // Ex: 6 para Junho
+    const dia = document.getElementById('select-dia').value; // Ex: 15
+    const dataSessao = document.getElementById('data-sessao');
 
-    const queryString = params.toString() ? `?${params.toString()}` : '';
-    const url = `${baseUrlBackend}/reunioes${queryString}`;
+    try {
+        // Busca a Última Sessão
+        const params = new URLSearchParams({
+            'tipo': tipo, // 1 - Ordinária, 2 - Extraordinária, 3 - Solene
+            'data_inicio__year': ano, // Ex: 2024
+            'data_inicio__month': mes, // Ex: 6 para Junho
+            'data_inicio__day': dia, // Ex: 15
+        });
 
-    const response = await fetch(url);
-    if (!response.ok) {
-        throw new Error("Erro ao buscar reuniões");
+        // TODO - Buscar todas as reuniões e filtrar pelos parâmetros escolhidos (ex: tipo de reunião, ano, mês, etc).
+        const resSessao = await fetch(`${baseUrl}/sessao/sessaoplenaria/?${params}`);
+        const jsonSessao = await resSessao.json();
+
+        if (!jsonSessao.results || jsonSessao.results.length === 0) {
+            alert("Nenhuma sessão encontrada para os parâmetros selecionados. Tente ajustar os filtros ou limpar para mostrar todas as sessões.");
+            dataSessao.innerText = "Nenhuma sessão encontrada.";
+            return;
+        }
+
+        const sessoes = jsonSessao.results;        
+        return sessoes;
+
+    } catch (erro) {
+        console.error("Erro ao comunicar com o SAPL:", erro);
+        dataSessao.innerText = "Não foi possível carregar os dados no momento.";
+        containerExpediente.innerHTML = "";
+        containerOrdemDia.innerHTML = "<p>Tente novamente mais tarde.</p>";
     }
-    const sessoes = await response.json();
-    return sessoes || [];
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('btn-pesquisar').addEventListener('click', async () => {
-        // Coletar valores dos filtros
-        const tipo = document.getElementById('select-tipo')?.value || '';
-        const ano = document.getElementById('select-ano')?.value || '';
-        const mes = document.getElementById('select-mes')?.value || '';
-        const dia = document.getElementById('select-dia')?.value || '';
-
         await mostrarTodasSessoes();
     });
-
     document.getElementById('btn-limpar').addEventListener('click', async () => {
-        // Limpar campos de filtro
         document.getElementById('select-ano').value = '';
         document.getElementById('select-mes').value = '';
         document.getElementById('select-dia').value = '';
         document.getElementById('select-tipo').value = '';
-
-        // Limpar lista de sessões
         const listaSessoes = document.getElementById('lista-sessoes');
         listaSessoes.innerHTML = '';
         listaSessoes.style.display = 'block';
